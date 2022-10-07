@@ -1,21 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Switch } from 'react-router-dom';
+import { getLinks } from 'react-router-hoc';
+
+import { BaseLayout } from './components';
+import { PostsLayout } from './pages';
+
 import './App.css';
 
-function App() {
+export const links = getLinks({
+  PostsLayout,
+});
+
+const AuthRoutes = () => (
+  <BaseLayout>
+    <Switch>
+      <PostsLayout />
+    </Switch>
+  </BaseLayout>
+);
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch>
+      <AuthRoutes />
+    </Switch>
   );
-}
+};
 
 export default App;
