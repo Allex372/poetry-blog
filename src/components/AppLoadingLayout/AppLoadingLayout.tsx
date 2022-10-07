@@ -6,7 +6,7 @@ import styles from './AppLoadingLayout.module.scss';
 
 export const AppLoadingLayout = () => {
   return (
-    <div className={clsx(styles.loading, 'flex align-items-center justify-content-center')}>
+    <div className={clsx(styles.loading)}>
       <CircularProgress size={64} />
     </div>
   );
