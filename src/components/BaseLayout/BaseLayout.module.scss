@@ -2,8 +2,13 @@
   position: relative;
 }
 
+.baseLayoutWrapper {
+  height: 100%;
+  display: flex;
+}
+
 .content {
-  position: absolute;
+  // position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
