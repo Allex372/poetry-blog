@@ -1,0 +1,35 @@
+.baseLayoutWrapper {
+  display: flex;
+
+  background-color: rgba(0, 25, 53, 0.85);
+  height: 100vh;
+}
+
+.flexWrapper {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+}
+
+.container {
+  position: relative;
+  align-items: center;
+}
+
+.content {
+  // position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.logoWrapper {
+  display: none;
+}
+
+@media screen and (max-width: 768) {
+  .logoWrapper {
+    display: block;
+  }
+}
