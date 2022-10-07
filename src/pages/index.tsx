@@ -1,1 +1,1 @@
-export * from './testPage';
+export * from './PostsLayot';

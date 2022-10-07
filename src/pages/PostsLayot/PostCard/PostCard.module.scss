@@ -1,0 +1,15 @@
+.cardWrapper {
+  background-color: aliceblue;
+  border-radius: 5px;
+  //   height: 500px;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.img {
+  height: 300px;
+  width: 100%;
+  background-color: red;
+}

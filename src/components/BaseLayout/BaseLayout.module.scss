@@ -1,10 +1,19 @@
-.container {
-  position: relative;
+.baseLayoutWrapper {
+  display: flex;
+
+  background-color: rgba(0, 25, 53, 0.85);
+  height: 100vh;
 }
 
-.baseLayoutWrapper {
+.flexWrapper {
   height: 100%;
-  display: flex;
+  width: 100%;
+  overflow: auto;
+}
+
+.container {
+  position: relative;
+  align-items: center;
 }
 
 .content {

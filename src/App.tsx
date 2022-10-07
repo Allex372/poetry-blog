@@ -3,18 +3,18 @@ import { Switch } from 'react-router-dom';
 import { getLinks } from 'react-router-hoc';
 
 import { BaseLayout } from './components';
-import { TestPage } from './pages';
+import { PostsLayout } from './pages';
 
 import './App.css';
 
 export const links = getLinks({
-  TestPage,
+  PostsLayout,
 });
 
 const AuthRoutes = () => (
   <BaseLayout>
     <Switch>
-      <TestPage />
+      <PostsLayout />
     </Switch>
   </BaseLayout>
 );
