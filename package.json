@@ -1,5 +1,4 @@
 {
-  "homepage": "http://Allex372.github.io/poetry-blog",
   "name": "test-app",
   "version": "0.2.0",
   "private": true,
@@ -28,7 +27,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "predeploy": "yarn run build",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d buid",
     "start": "react-scripts start",
     "build": "react-scripts build",

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { Switch, Redirect } from 'react-router-dom';
 import { getLinks } from 'react-router-hoc';
 
 import { BaseLayout } from './components';
@@ -14,7 +14,8 @@ export const links = getLinks({
 const AuthRoutes = () => (
   <BaseLayout>
     <Switch>
-      <PostsLayout />
+      <Redirect exact from="/" to={links.PostsLayout()} />
+      <PostsLayout exact />
     </Switch>
   </BaseLayout>
 );
