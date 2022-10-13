@@ -1,7 +1,8 @@
-import React, { FC } from 'react';
-import clsx from 'clsx';
+import React, { FC, useState, useEffect } from 'react';
 
 import { Header } from '../../components';
+import { localStorageManager } from '../../services';
+import clsx from 'clsx';
 
 import styles from './BaseLayout.module.scss';
 
@@ -10,12 +11,36 @@ interface BaseLayoutProps {
 }
 
 export const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
+  const [currentTheme, setCurrentTheme] = useState<number | null | string>(null);
+
+  const handleChangeTheme = (id: number | string | null) => {
+    setCurrentTheme(id);
+  };
+
+  const handleGetTheme = () => {
+    setCurrentTheme(localStorageManager.getItem('theme_Id'));
+  };
+
+  useEffect(() => {
+    handleGetTheme();
+  }, []);
+
+  useEffect(() => {
+    console.log(currentTheme);
+  }, [currentTheme]);
+
   return (
-    <div className={styles.baseLayoutWrapper}>
+    <div
+      className={clsx(
+        currentTheme == '1' && [styles.baseLayoutWrapper, styles.baseLayoutWrapperDarkTheme],
+        currentTheme == '2' && [styles.baseLayoutWrapper, styles.baseLayoutWrapperLightTheme],
+        currentTheme == '3' && [styles.baseLayoutWrapper, styles.baseLayoutWrapperClassicTheme],
+      )}
+    >
       <div className={styles.flexWrapper}>
-        <Header />
-        <div className={clsx(styles.container, 'flex', 'flex-1')}>
-          <div className={clsx(styles.content, 'flex-1')}>{children}</div>
+        <Header changeTheme={handleChangeTheme} />
+        <div className={clsx(styles.container)}>
+          <div className={clsx(styles.content)}>{children}</div>
         </div>
       </div>
     </div>
