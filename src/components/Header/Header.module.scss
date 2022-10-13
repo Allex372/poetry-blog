@@ -194,6 +194,32 @@
   color: #77c9e6;
 }
 
+.themeItem {
+  display: flex;
+  align-items: center;
+}
+
 .themeItem:not(:first-child) {
   margin-top: 4px;
+}
+
+.themeIcon {
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.themeIconDarkTheme {
+  path {
+    stroke: #77c9e6;
+    fill: #77c9e6;
+  }
+}
+
+.themeIconClassicTheme {
+  path {
+    stroke: white;
+    fill: white;
+  }
 }

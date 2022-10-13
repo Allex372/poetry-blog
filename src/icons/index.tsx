@@ -4,3 +4,4 @@ export * from './CloseIcon';
 export * from './Customizing';
 export * from './SettingsIcon';
 export * from './HomeIcon';
+export * from './Choosen';

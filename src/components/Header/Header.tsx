@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-hoc';
 
-import { MenuIcon, SearchIcon, CloseIcon, HomeIcon, SettingsIcon, CustomizingIcon } from '../../icons';
+import { MenuIcon, SearchIcon, CloseIcon, HomeIcon, SettingsIcon, CustomizingIcon, ChoosenIcon } from '../../icons';
 import { SidebarNavItem } from './SidebarItems';
 import { links } from '../../App';
 import { localStorageManager } from '../../services';
@@ -74,9 +74,9 @@ export const Header = SideBarRoute(({ changeTheme }: HeaderInterface) => {
         ) : (
           <MenuIcon
             className={clsx(
-              currentTheme == '1' && [styles.menuIcon, styles.menuIconDarkTheme],
+              currentTheme == '1' && [styles.menuIcon, styles.themeIconDarkTheme],
               currentTheme == '2' && [styles.menuIcon, styles.menuIconLightTheme],
-              currentTheme == '3' && [styles.menuIcon, styles.menuIconClassicTheme],
+              currentTheme == '3' && [styles.menuIcon, styles.themeIconClassicTheme],
             )}
             onClick={handleSideBarClick}
           />
@@ -172,6 +172,15 @@ export const Header = SideBarRoute(({ changeTheme }: HeaderInterface) => {
                   {Themes.map((theme) => (
                     <div key={theme.id} onClick={() => handleSetTheme(theme)} className={styles.themeItem}>
                       {theme.name}
+                      {currentTheme == theme?.id && (
+                        <ChoosenIcon
+                          className={clsx(
+                            currentTheme == '1' && [styles.themeIcon, styles.themeIconDarkTheme],
+                            currentTheme == '2' && [styles.themeIcon, styles.sideBarIconLightTheme],
+                            currentTheme == '3' && [styles.themeIcon, styles.themeIconClassicTheme],
+                          )}
+                        />
+                      )}
                     </div>
                   ))}
                 </div>
