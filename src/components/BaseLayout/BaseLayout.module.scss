@@ -1,8 +1,18 @@
 .baseLayoutWrapper {
   display: flex;
-
-  background-color: rgba(0, 25, 53, 0.85);
   height: 100vh;
+}
+
+.baseLayoutWrapperClassicTheme {
+  background-color: rgba(0, 25, 53, 0.85);
+}
+
+.baseLayoutWrapperDarkTheme {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.baseLayoutWrapperlightTheme {
+  background-color: rgb(247, 247, 247);
 }
 
 .flexWrapper {
