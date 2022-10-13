@@ -25,10 +25,6 @@ export const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
     handleGetTheme();
   }, []);
 
-  useEffect(() => {
-    console.log(currentTheme);
-  }, [currentTheme]);
-
   return (
     <div
       className={clsx(
