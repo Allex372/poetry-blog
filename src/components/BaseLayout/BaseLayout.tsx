@@ -22,6 +22,10 @@ export const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
   };
 
   useEffect(() => {
+    currentTheme == null && setCurrentTheme(3);
+  }, []);
+
+  useEffect(() => {
     handleGetTheme();
   }, []);
 

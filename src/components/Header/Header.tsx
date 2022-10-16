@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-hoc';
 import { useHistory } from 'react-router-dom';
+import clsx from 'clsx';
 
 import { MenuIcon, SearchIcon, CloseIcon, HomeIcon, SettingsIcon, CustomizingIcon, ChoosenIcon } from '../../icons';
 import { SidebarNavItem } from './SidebarItems';
 import { links } from '../../App';
 import { localStorageManager } from '../../services';
-import clsx from 'clsx';
 
 import styles from './Header.module.scss';
 
@@ -36,24 +36,29 @@ export const Header = SideBarRoute<HeaderInterface>(({ changeTheme, match: { que
   const { push } = useHistory();
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
   const [isThemeOpen, setIsThemeOpen] = useState<boolean>(false);
-  const [currentTheme, setCurrentTheme] = useState<number | null | string>(null);
+  const [currentTheme, setCurrentTheme] = useState<number | null | string>();
 
   const handleGetTheme = () => {
     setCurrentTheme(localStorageManager.getItem('theme_Id'));
-    currentTheme !== null && push(link({ ...query, theme: +currentTheme }));
   };
 
   const handleSetTheme = ({ id }: ThemeInterface) => {
-    localStorageManager.setItem('theme_Id', id);
     push(link({ ...query, theme: id }));
+    localStorageManager.setItem('theme_Id', id);
     changeTheme(id);
     handleGetTheme();
   };
+
   const handleSideBarClick = () => {
     setOpenSideBar(!openSideBar);
   };
 
   useEffect(() => {
+    if (currentTheme == null && localStorageManager.getItem('theme_Id') == null) {
+      localStorageManager.setItem('theme_Id', 3);
+      push(link({ ...query, theme: 3 }));
+      setCurrentTheme(3);
+    }
     handleGetTheme();
   }, []);
 
