@@ -1,0 +1,44 @@
+.title {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 36px;
+  padding: 0 16px;
+
+  svg {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+  }
+
+  .closeBtn {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .title {
+    background-color: grey;
+    font-size: 16px;
+    padding: 16px;
+    color: white;
+    letter-spacing: 0.15px;
+    svg {
+      width: 22px;
+      height: 22px;
+      margin-right: 20px;
+      path {
+        stroke: white;
+      }
+    }
+    .closeBtn {
+      width: 28px;
+      cursor: pointer;
+      display: block;
+      position: absolute;
+      right: 16px;
+      margin-right: 0;
+    }
+  }
+}
