@@ -19,11 +19,8 @@ export const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
 
   const handleGetTheme = () => {
     setCurrentTheme(localStorageManager.getItem('theme_Id'));
-  };
-
-  useEffect(() => {
     currentTheme == null && setCurrentTheme(3);
-  }, []);
+  };
 
   useEffect(() => {
     handleGetTheme();
