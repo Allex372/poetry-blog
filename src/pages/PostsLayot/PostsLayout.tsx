@@ -1,4 +1,7 @@
+import { useContext } from 'react';
 import { Route } from 'react-router-hoc';
+
+import Context from '../../context/Context';
 import { PostCard } from './PostCard';
 import logo from './img.jpeg'; // Tell webpack this JS file uses this image
 
@@ -86,22 +89,17 @@ const PostsCardArray = {
   page: 1,
 };
 
-export const PostsLayout = PostsLayoutRoute(
-  ({
-    match: {
-      query: { theme },
-    },
-  }) => {
-    return (
-      <>
-        <div className={styles.wrapper}>
-          {PostsCardArray?.items?.map((el) => (
-            <PostCard key={el.id} src={el.src} title={el.title} text={el.text} theme={theme} />
-          ))}
-        </div>
-      </>
-    );
-  },
-);
+export const PostsLayout = PostsLayoutRoute(() => {
+  const { currentTheme } = useContext(Context);
+  return (
+    <>
+      <div className={styles.wrapper}>
+        {PostsCardArray?.items?.map((el) => (
+          <PostCard key={el.id} src={el.src} title={el.title} text={el.text} theme={currentTheme} />
+        ))}
+      </div>
+    </>
+  );
+});
 
 export default PostsLayout;
