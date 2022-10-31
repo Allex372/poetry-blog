@@ -8,7 +8,7 @@ type PostCardProps = {
   src?: string;
   title?: string;
   text?: string;
-  theme: number | undefined;
+  theme: number | undefined | null | string;
 };
 
 export const PostCard = ({ src, title, text, theme }: PostCardProps) => {

@@ -108,6 +108,27 @@
   }
 }
 
+.sideBarActiveIconClassicTheme {
+  path {
+    stroke: white;
+    fill: white;
+  }
+}
+
+.sideBarActiveIconLightTheme {
+  path {
+    stroke: black;
+    fill: black;
+  }
+}
+
+.sideBarActiveIconDarkTheme {
+  path {
+    stroke: #77c9e6;
+    fill: #77c9e6;
+  }
+}
+
 .sideBarWrapperOpen {
   bottom: 0;
   display: flex;
