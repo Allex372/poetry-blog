@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 
 import { Header } from '../../components';
 import { localStorageManager } from '../../services';
+import Context from '../../context/Context';
 import clsx from 'clsx';
 
 import styles from './BaseLayout.module.scss';
@@ -26,20 +27,26 @@ export const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
     handleGetTheme();
   }, [currentTheme]);
 
+  const value = {
+    currentTheme,
+  };
+
   return (
-    <div
-      className={clsx(
-        currentTheme == '1' && [styles.baseLayoutWrapper, styles.baseLayoutWrapperDarkTheme],
-        currentTheme == '2' && [styles.baseLayoutWrapper, styles.baseLayoutWrapperLightTheme],
-        currentTheme == '3' && [styles.baseLayoutWrapper, styles.baseLayoutWrapperClassicTheme],
-      )}
-    >
-      <div className={styles.flexWrapper}>
-        <Header changeTheme={handleChangeTheme} />
-        <div className={clsx(styles.container)}>
-          <div className={clsx(styles.content)}>{children}</div>
+    <Context.Provider value={value}>
+      <div
+        className={clsx(
+          currentTheme == '1' && [styles.baseLayoutWrapper, styles.baseLayoutWrapperDarkTheme],
+          currentTheme == '2' && [styles.baseLayoutWrapper, styles.baseLayoutWrapperLightTheme],
+          currentTheme == '3' && [styles.baseLayoutWrapper, styles.baseLayoutWrapperClassicTheme],
+        )}
+      >
+        <div className={styles.flexWrapper}>
+          <Header changeTheme={handleChangeTheme} />
+          <div className={styles.container}>
+            <div className={styles.content}>{children}</div>
+          </div>
         </div>
       </div>
-    </div>
+    </Context.Provider>
   );
 };

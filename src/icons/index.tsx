@@ -7,3 +7,4 @@ export * from './HomeIcon';
 export * from './Choosen';
 export * from './ThumbsUp';
 export * from './ImageIcon';
+export * from './ActivityIcon';
