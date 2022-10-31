@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Route } from 'react-router-hoc';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState, FC } from 'react';
 import Button from '@material-ui/core/Button';
 import clsx from 'clsx';
 
-import { MenuIcon, SearchIcon, CloseIcon, HomeIcon, SettingsIcon, CustomizingIcon, ChoosenIcon } from '../../icons';
+import {
+  MenuIcon,
+  SearchIcon,
+  CloseIcon,
+  HomeIcon,
+  ActivityIcon,
+  SettingsIcon,
+  CustomizingIcon,
+  ChoosenIcon,
+} from '../../icons';
 import { SidebarNavItem } from './SidebarItems';
 import { links } from '../../App';
 import { localStorageManager } from '../../services';
@@ -12,13 +19,6 @@ import { CustomDialog } from '../Dialog';
 import { CreatePostForm } from '../CreatePostForm';
 
 import styles from './Header.module.scss';
-
-const SideBarRoute = Route(
-  {
-    theme: Route.query.number,
-  },
-  '/posts',
-);
 
 const Themes = [
   { id: 1, name: 'Dark' },
@@ -48,9 +48,8 @@ enum RolesEnum {
 
 const btnStyle = { backgroundColor: '#00b8ff', color: 'white', fontWeight: 'bold' };
 
-export const Header = SideBarRoute<HeaderInterface>(({ changeTheme, match: { query }, link }) => {
+export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
   const currentRole = RolesEnum.Admin;
-  const { push } = useHistory();
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
   const [isThemeOpen, setIsThemeOpen] = useState<boolean>(false);
   const [currentTheme, setCurrentTheme] = useState<number | null | string>();
@@ -61,7 +60,6 @@ export const Header = SideBarRoute<HeaderInterface>(({ changeTheme, match: { que
   };
 
   const handleSetTheme = ({ id }: ThemeInterface) => {
-    push(link({ ...query, theme: id }));
     localStorageManager.setItem('theme_Id', id);
     changeTheme(id);
     handleGetTheme();
@@ -80,11 +78,14 @@ export const Header = SideBarRoute<HeaderInterface>(({ changeTheme, match: { que
   useEffect(() => {
     if (currentTheme == null && localStorageManager.getItem('theme_Id') == null) {
       localStorageManager.setItem('theme_Id', 3);
-      push(link({ ...query, theme: 3 }));
       setCurrentTheme(3);
     }
     handleGetTheme();
   }, []);
+
+  //   useEffect(() => {
+  //     console.log(currentTheme);
+  //   }, [currentTheme]);
 
   return (
     <>
@@ -182,6 +183,27 @@ export const Header = SideBarRoute<HeaderInterface>(({ changeTheme, match: { que
               </div>
             </SidebarNavItem>
 
+            <SidebarNavItem className={styles.linkStyle} route={links.ActivityLayout()}>
+              <div className={styles.iconWrapper}>
+                <ActivityIcon
+                  className={clsx(
+                    currentTheme == '1' && [styles.sideBarIcon, styles.sideBarActiveIconDarkTheme],
+                    currentTheme == '2' && [styles.sideBarIcon, styles.sideBarActiveIconLightTheme],
+                    currentTheme == '3' && [styles.sideBarIcon, styles.sideBarActiveIconClassicTheme],
+                  )}
+                />
+                <p
+                  className={clsx(
+                    currentTheme == '1' && [styles.sidebarText, styles.sidebarTextDarkTheme],
+                    currentTheme == '2' && [styles.sidebarText, styles.sidebarTextLightTheme],
+                    currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
+                  )}
+                >
+                  Activity
+                </p>
+              </div>
+            </SidebarNavItem>
+
             <div className={styles.iconWrapper}>
               <CustomizingIcon
                 className={clsx(
@@ -245,4 +267,4 @@ export const Header = SideBarRoute<HeaderInterface>(({ changeTheme, match: { que
       )}
     </>
   );
-});
+};
