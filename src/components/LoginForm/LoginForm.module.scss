@@ -1,0 +1,18 @@
+.titleFontSize {
+  font-size: 44px;
+  padding-top: 52px;
+}
+
+.btnPadding {
+  padding-bottom: 76px;
+}
+
+@media screen and (max-width: 960px) {
+  .titleFontSize {
+    font-size: 32px;
+  }
+
+  .textStyle {
+    font-size: 14px;
+  }
+}

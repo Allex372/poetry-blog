@@ -4,3 +4,6 @@ export * from './Header';
 export * from './Dialog';
 export * from './CreatePostForm';
 export * from './LoadingButton';
+export * from './UnAuthLayout';
+export * from './LoginForm';
+export * from './PassVisibilityBtn';
