@@ -7,3 +7,21 @@
   margin-top: 16px;
   overflow-y: auto;
 }
+
+.customTooltip {
+  background-color: white;
+  padding: 16px;
+  border: 2px solid gray;
+}
+
+.tooltipTextClassicTheme {
+  color: black;
+}
+
+.tooltipTextLightTheme {
+  color: white;
+}
+
+.tooltipTextDarkTheme {
+  color: #77c9e6;
+}
