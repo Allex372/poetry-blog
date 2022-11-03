@@ -1,9 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Route } from 'react-router-hoc';
 
 import Context from '../../context/Context';
 import { PostCard } from './PostCard';
 import logo from './img.jpeg'; // Tell webpack this JS file uses this image
+import { useAuth } from '../../context';
 
 import styles from './PostsLayout.module.scss';
 
@@ -91,6 +92,10 @@ const PostsCardArray = {
 
 export const PostsLayout = PostsLayoutRoute(() => {
   const { currentTheme } = useContext(Context);
+  const { userData } = useAuth();
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
   return (
     <>
       <div className={styles.wrapper}>
