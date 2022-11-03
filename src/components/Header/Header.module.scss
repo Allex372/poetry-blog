@@ -82,6 +82,7 @@
 
 .linkStyle {
   text-decoration: none;
+  padding-bottom: 16px;
 }
 
 .sideBarIcon {
@@ -195,7 +196,7 @@
 .themes {
   position: absolute;
   left: 64px;
-  top: 18px;
+  top: 2px;
   display: flex;
   flex-direction: column;
   margin-left: 32px;
@@ -218,6 +219,7 @@
 .themeItem {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .themeItem:not(:first-child) {
@@ -228,7 +230,6 @@
   width: 16px;
   height: 16px;
   margin-left: 4px;
-  cursor: pointer;
 }
 
 .themeIconDarkTheme {

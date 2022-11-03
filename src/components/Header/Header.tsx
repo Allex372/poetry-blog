@@ -17,6 +17,7 @@ import { links } from '../../App';
 import { localStorageManager } from '../../services';
 import { CustomDialog } from '../Dialog';
 import { CreatePostForm } from '../CreatePostForm';
+import { useAuth } from '../../context';
 
 import styles from './Header.module.scss';
 
@@ -42,14 +43,16 @@ interface HeaderInterface {
 }
 
 enum RolesEnum {
-  Admin = 'Admin',
+  Admin = 'admin',
   User = 'User',
 }
 
 const btnStyle = { backgroundColor: '#00b8ff', color: 'white', fontWeight: 'bold' };
 
 export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
-  const currentRole = RolesEnum.Admin;
+  const { userData } = useAuth();
+
+  // const currentRole = RolesEnum.Admin;
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
   const [isThemeOpen, setIsThemeOpen] = useState<boolean>(false);
   const [currentTheme, setCurrentTheme] = useState<number | null | string>();
@@ -134,7 +137,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
               currentTheme == '3' && [styles.sideBarWrapperOpen, styles.sideBarWrapperOpenClassicTheme],
             )}
           >
-            {currentRole === RolesEnum.Admin && (
+            {userData?.role === RolesEnum.Admin && (
               <div className={styles.buttonWrapper}>
                 <Button style={btnStyle} onClick={() => setOpenCreatePostDialog(true)} variant="contained">
                   Create Post
@@ -183,26 +186,28 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
               </div>
             </SidebarNavItem>
 
-            <SidebarNavItem className={styles.linkStyle} route={links.ActivityLayout()}>
-              <div className={styles.iconWrapper}>
-                <ActivityIcon
-                  className={clsx(
-                    currentTheme == '1' && [styles.sideBarIcon, styles.sideBarActiveIconDarkTheme],
-                    currentTheme == '2' && [styles.sideBarIcon, styles.sideBarActiveIconLightTheme],
-                    currentTheme == '3' && [styles.sideBarIcon, styles.sideBarActiveIconClassicTheme],
-                  )}
-                />
-                <p
-                  className={clsx(
-                    currentTheme == '1' && [styles.sidebarText, styles.sidebarTextDarkTheme],
-                    currentTheme == '2' && [styles.sidebarText, styles.sidebarTextLightTheme],
-                    currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
-                  )}
-                >
-                  Activity
-                </p>
-              </div>
-            </SidebarNavItem>
+            {userData?.role === RolesEnum.Admin && (
+              <SidebarNavItem className={styles.linkStyle} route={links.ActivityLayout()}>
+                <div className={styles.iconWrapper}>
+                  <ActivityIcon
+                    className={clsx(
+                      currentTheme == '1' && [styles.sideBarIcon, styles.sideBarActiveIconDarkTheme],
+                      currentTheme == '2' && [styles.sideBarIcon, styles.sideBarActiveIconLightTheme],
+                      currentTheme == '3' && [styles.sideBarIcon, styles.sideBarActiveIconClassicTheme],
+                    )}
+                  />
+                  <p
+                    className={clsx(
+                      currentTheme == '1' && [styles.sidebarText, styles.sidebarTextDarkTheme],
+                      currentTheme == '2' && [styles.sidebarText, styles.sidebarTextLightTheme],
+                      currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
+                    )}
+                  >
+                    Activity
+                  </p>
+                </div>
+              </SidebarNavItem>
+            )}
 
             <div className={styles.iconWrapper}>
               <CustomizingIcon
