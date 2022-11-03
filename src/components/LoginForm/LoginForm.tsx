@@ -47,39 +47,44 @@ export const LoginForm: FC<LoginProps> = (props) => {
             <p className={styles.titleFontSize}>Welcome back</p>
             <p className={styles.textStyle}>Login</p>
             <Form className={styles.inputWrapper}>
-              <Field
-                component={TextField}
-                name="email"
-                label="Email"
-                variant="outlined"
-                type="email"
-                className={styles.inputStyle}
-              />
+              <div className={styles.inputStyle}>
+                <Field
+                  component={TextField}
+                  className={styles.inputW}
+                  name="email"
+                  label="Email"
+                  variant="outlined"
+                  type="email"
+                />
+              </div>
 
-              <Field
-                component={TextField}
-                type={isPassVisible ? 'text' : 'password'}
-                name="password"
-                variant="outlined"
-                label="Password"
-                className={styles.inputStyle}
-                InputProps={{
-                  endAdornment: (
-                    <Tooltip
-                      aria-label={'Show password'}
-                      title={isPassVisible ? 'Hide password' : 'Show password'}
-                      placement="right"
-                    >
-                      <span className="ml-6">
-                        <PassVisibilityBtn
-                          isPassVisible={isPassVisible}
-                          togglePasswordVisibility={togglePasswordVisibility}
-                        />
-                      </span>
-                    </Tooltip>
-                  ),
-                }}
-              />
+              <div className={styles.inputStyle}>
+                <Field
+                  component={TextField}
+                  type={isPassVisible ? 'text' : 'password'}
+                  name="password"
+                  variant="outlined"
+                  className={styles.inputW}
+                  label="Password"
+                  InputProps={{
+                    endAdornment: (
+                      <Tooltip
+                        aria-label={'Show password'}
+                        title={isPassVisible ? 'Hide password' : 'Show password'}
+                        placement="right"
+                      >
+                        <span className="ml-6">
+                          <PassVisibilityBtn
+                            isPassVisible={isPassVisible}
+                            togglePasswordVisibility={togglePasswordVisibility}
+                          />
+                        </span>
+                      </Tooltip>
+                    ),
+                  }}
+                />
+              </div>
+
               {/* <div className="flex justify-content-between align-items-center mb-32">
                   <div className="flex align-items-center">
                     <Field component={Switch} type="checkbox" color="primary" name="rememberMe" />
