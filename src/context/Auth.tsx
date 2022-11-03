@@ -1,4 +1,4 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
 import axios from 'axios';
 import EventEmitter from 'events';
@@ -8,7 +8,7 @@ import { isValidToken } from '../utils';
 import { REFRESH_TOKEN, TOKEN } from '../consts';
 // import { components } from 'generated/types';
 import { api, apiRoutes } from '../api';
-import { HttpErrorResponse, LoginFormValues, SignUpFormValuesRequest, VerificationFormValues } from '../types';
+import { HttpErrorResponse, LoginFormValues, SignUpFormValuesRequest } from '../types';
 
 // type AccountInfo = components['schemas']['AccountInfo'];
 // type RolePermissionsDTO = components['schemas']['RolePermissionsDTO'];
@@ -22,10 +22,20 @@ type LoginType = {
   authCode: boolean;
 };
 
+interface UserDataInterface {
+  createdAt: string;
+  email: string;
+  id: string;
+  password: string;
+  role: string;
+  updatedAr: string;
+  _id: string;
+}
+
 interface AuthContextInterface {
   isInitializing: boolean;
   isAuthenticated: boolean;
-  userData: any | null;
+  userData: UserDataInterface | null;
   signUp: (userData: SignUpFormValuesRequest) => Promise<void>;
   login: (userData: LoginFormValues) => Promise<LoginType>;
   //   verifyCode: (userData: VerificationFormValues) => Promise<void>;

@@ -1,16 +1,14 @@
 import { Route } from 'react-router-hoc';
-import { useContext } from 'react';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 
-import Context from '../../context/Context';
 import { LoginForm } from '../../components';
 import { useAuth } from '../../context';
 import { HttpErrorResponse, LoginFormValues } from '../../types';
 import { links } from '../../App';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 
-import styles from './Activity.module.scss';
+import styles from './LoginPage.module.scss';
 
 const LoginPageRoute = Route(
   {
@@ -31,7 +29,11 @@ export const LoginPage = LoginPageRoute(() => {
       toast.error((e as HttpErrorResponse).message);
     }
   };
-  return <LoginForm onSubmit={handleSubmit} />;
+  return (
+    <div className={styles.formWrapper}>
+      <LoginForm onSubmit={handleSubmit} />
+    </div>
+  );
 });
 
 export default LoginPage;
