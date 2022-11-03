@@ -1,16 +1,27 @@
 import React from 'react';
-import { Switch, Redirect } from 'react-router-dom';
+import { Switch, Redirect, Route } from 'react-router-dom';
 import { getLinks } from 'react-router-hoc';
 
-import { BaseLayout } from './components';
-import { PostsLayout, ActivityLayout } from './pages';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { BaseLayout, UnAuthLayout } from './components';
+import { PostsLayout, ActivityLayout, LoginPage } from './pages';
+import { useAuth } from './context';
 
 import './App.css';
 
 export const links = getLinks({
   PostsLayout,
   ActivityLayout,
+  LoginPage,
 });
+
+const UnAuthRoutes = () => (
+  <UnAuthLayout>
+    <Switch>
+      <LoginPage />
+    </Switch>
+  </UnAuthLayout>
+);
 
 const AuthRoutes = () => (
   <BaseLayout>
@@ -22,10 +33,22 @@ const AuthRoutes = () => (
 );
 
 const App = () => {
+  const { isAuthenticated, isInitializing } = useAuth();
+
+  // const isAuthenticated = false;
+
+  // if (isInitializing) {
+  //   return <CircularProgress size={64} />;
+  // }
   return (
     <Switch>
       <Redirect exact from="/" to={links.PostsLayout()} />
+
+      <Route path={links.LoginPage()}>
+        <UnAuthRoutes />
+      </Route>
       <AuthRoutes />
+      {/* {isAuthenticated ? <AuthRoutes /> : <Redirect to={links.LoginPage()} />} */}
     </Switch>
   );
 };

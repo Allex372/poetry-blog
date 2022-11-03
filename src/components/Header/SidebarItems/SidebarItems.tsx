@@ -6,7 +6,7 @@ import styles from './SidebarItems.module.scss';
 
 export interface SidebarNavItemProps {
   children: React.ReactNode;
-  route: string;
+  route: string | undefined;
   className?: string;
   activeClass?: string;
   iconOnly?: boolean;
@@ -14,23 +14,27 @@ export interface SidebarNavItemProps {
 
 export const SidebarNavItem = ({ children, route, className, activeClass, iconOnly }: SidebarNavItemProps) => {
   return (
-    <NavLink
-      to={route}
-      className={clsx(
-        styles.sidebarLink,
-        !iconOnly && styles.svgOffset,
-        iconOnly ? 'px-18' : 'px-16',
-        'my-8',
-        'py-8',
-        'flex',
-        'align-items-center',
-        'text-22',
-        'text-black',
-        className,
+    <>
+      {route && (
+        <NavLink
+          to={route}
+          className={clsx(
+            styles.sidebarLink,
+            !iconOnly && styles.svgOffset,
+            iconOnly ? 'px-18' : 'px-16',
+            'my-8',
+            'py-8',
+            'flex',
+            'align-items-center',
+            'text-22',
+            'text-black',
+            className,
+          )}
+          activeClassName={activeClass}
+        >
+          {children}
+        </NavLink>
       )}
-      activeClassName={activeClass}
-    >
-      {children}
-    </NavLink>
+    </>
   );
 };
