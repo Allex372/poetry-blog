@@ -18,7 +18,7 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorageManager.getItem(TOKEN);
 
-  if (config.headers) config.headers['X-Token'] = `Bearer ${token}`;
+  if (config.headers) config.headers['Authorization'] = token;
 
   return config;
 });
@@ -36,18 +36,20 @@ api.interceptors.response.use(
           {},
           {
             headers: {
-              'X-Refresh-Token': refreshToken,
+              ['Authorization']: refreshToken,
             },
           },
         );
 
+        console.log(response);
         if (response.status == 200) {
-          const { token, refreshToken: newRefreshToken } = response.data;
+          const { access_token, refresh_token: newRefreshToken } = response.data;
 
-          const validated = isValidToken(token);
+          const validated = isValidToken(access_token);
 
           if (validated) {
-            localStorageManager.setItem(TOKEN, token), localStorageManager.setItem(REFRESH_TOKEN, newRefreshToken);
+            localStorageManager.setItem(TOKEN, access_token),
+              localStorageManager.setItem(REFRESH_TOKEN, newRefreshToken);
           }
 
           return api(originalRequest);

@@ -17,27 +17,27 @@ export const AuthEmitter = new EventEmitter();
 
 type LoginType = {
   success: boolean;
-  token?: string;
-  refreshToken?: string;
+  access_token?: string;
+  refresh_token?: string;
   authCode: boolean;
 };
 
 interface AuthContextInterface {
   isInitializing: boolean;
   isAuthenticated: boolean;
-  //   userData: (AccountInfo & { permissions: Set<string> }) | null;
+  userData: any | null;
   signUp: (userData: SignUpFormValuesRequest) => Promise<void>;
   login: (userData: LoginFormValues) => Promise<LoginType>;
   //   verifyCode: (userData: VerificationFormValues) => Promise<void>;
   logout: () => void;
-  //   updateAccountInfo: () => void;
-  handleAuth: (token: string, refreshToken: string, rememberMe: boolean) => void;
+  updateAccountInfo: () => void;
+  handleAuth: (access_token: string, refresh_token: string, rememberMe: boolean) => void;
 }
 
 const authAPI = axios.create({
   baseURL: apiRoutes.baseURL,
   headers: {
-    'content-type': 'application/json',
+    'Content-Type': 'application/json',
   },
 });
 
@@ -53,7 +53,7 @@ const signUpMutation = (userData: SignUpFormValuesRequest) =>
 
 const loginMutation = (userData: LoginFormValues) => authAPI.post(apiRoutes.login, userData).then((res) => res.data);
 
-// const accountQuery = () => api.get<AccountInfo & RolePermissionsDTO>(apiRoutes.account).then((res) => res?.data);
+const accountQuery = () => api.get(apiRoutes.account).then((res) => res?.data);
 
 export const AuthContext = createContext<AuthContextInterface | null>(null);
 
@@ -61,7 +61,7 @@ export const useAuth = () => useContext(AuthContext) as AuthContextInterface;
 
 export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
   //   const rememberMe = useMemo(() => !!localStorageManager.getItem(REMEMBER_ME), []);
-  //   const [userData, setUserData] = useState<(AccountInfo & { permissions: Set<string> }) | null>(null);
+  const [userData, setUserData] = useState(null);
   const [token, setAuthToken] = useState(() => {
     const tokenFromStorage = localStorageManager.getItem(TOKEN);
 
@@ -93,9 +93,9 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
     signUpMutation(values),
   );
 
-  //   const { data: accountInfo, refetch } = useQuery('accountQuery', () => accountQuery(), {
-  //     enabled: false,
-  //   });
+  const { data: accountInfo, refetch } = useQuery('accountQuery', () => accountQuery(), {
+    enabled: false,
+  });
 
   const signUp = async (userData: SignUpFormValuesRequest) => {
     try {
@@ -108,9 +108,9 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
   const login = async (userData: LoginFormValues) => {
     try {
       const data = await loginRequestMutation(userData);
-      const { token, refreshToken } = data;
+      const { access_token, refresh_token } = data;
 
-      token && refreshToken && setToken(token, refreshToken);
+      access_token && refresh_token && setToken(access_token, refresh_token);
 
       return data;
     } catch (e) {
@@ -123,20 +123,20 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
     localStorageManager.removeItem(REFRESH_TOKEN);
   };
 
-  const setToken = (token: string, refreshToken: string) => {
-    const validated = isValidToken(token);
+  const setToken = (access_token: string, refresh_token: string) => {
+    const validated = isValidToken(access_token);
 
     if (validated) {
-      localStorageManager.setItem<typeof token>(TOKEN, token);
-      localStorageManager.setItem<typeof refreshToken>(REFRESH_TOKEN, refreshToken);
+      localStorageManager.setItem<typeof access_token>(TOKEN, access_token);
+      localStorageManager.setItem<typeof refresh_token>(REFRESH_TOKEN, refresh_token);
       //   rememberMe && localStorageManager.setItem(REMEMBER_ME, rememberMe);
-      setAuthToken(token);
-      setAuthRefreshToken(refreshToken);
+      setAuthToken(access_token);
+      setAuthRefreshToken(refresh_token);
     }
   };
 
-  const handleAuth = (token: string, refreshToken: string) => {
-    setToken(token, refreshToken);
+  const handleAuth = (access_token: string, refresh_token: string) => {
+    setToken(access_token, refresh_token);
   };
 
   const logout = () => {
@@ -152,15 +152,15 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
   }, []);
 
   useEffect(() => {
-    token && refreshToken;
+    token && refreshToken && refetch();
   }, [token, refreshToken]);
 
-  //   useEffect(() => {
-  //     if (accountInfo) {
-  //       const account = { ...accountInfo, permissions: new Set(accountInfo?.permissions) };
-  //       setUserData(account);
-  //     }
-  //   }, [accountInfo]);
+  useEffect(() => {
+    if (accountInfo) {
+      const account = { ...accountInfo, permissions: new Set(accountInfo?.permissions) };
+      setUserData(account);
+    }
+  }, [accountInfo]);
 
   //   console.log('token,', token, refreshToken);
 
@@ -173,8 +173,8 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
       value={{
         isInitializing,
         isAuthenticated,
-        // userData,
-        // updateAccountInfo: refetch,
+        userData,
+        updateAccountInfo: refetch,
         // verifyCode,
         signUp,
         login,
