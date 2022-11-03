@@ -35,7 +35,7 @@ interface ThemeInterface {
 interface PostInterface {
   title?: string;
   text?: string;
-  img?: ImageData;
+  img?: string | Blob;
 }
 
 interface HeaderInterface {
@@ -73,6 +73,8 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
   };
 
   const handleCreatePost = (value: PostInterface) => {
+    const formData = new FormData();
+    value?.img && formData.append('file', value?.img);
     console.log(value);
   };
 
@@ -85,10 +87,6 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
     }
     handleGetTheme();
   }, []);
-
-  //   useEffect(() => {
-  //     console.log(currentTheme);
-  //   }, [currentTheme]);
 
   return (
     <>
@@ -137,13 +135,13 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
               currentTheme == '3' && [styles.sideBarWrapperOpen, styles.sideBarWrapperOpenClassicTheme],
             )}
           >
-            {userData?.role === RolesEnum.Admin && (
-              <div className={styles.buttonWrapper}>
-                <Button style={btnStyle} onClick={() => setOpenCreatePostDialog(true)} variant="contained">
-                  Create Post
-                </Button>
-              </div>
-            )}
+            {/* {userData?.role === RolesEnum.Admin && ( */}
+            <div className={styles.buttonWrapper}>
+              <Button style={btnStyle} onClick={() => setOpenCreatePostDialog(true)} variant="contained">
+                Create Post
+              </Button>
+            </div>
+            {/* )} */}
             <SidebarNavItem className={styles.linkStyle} route={links.PostsLayout()}>
               <div className={styles.iconWrapper}>
                 <HomeIcon
