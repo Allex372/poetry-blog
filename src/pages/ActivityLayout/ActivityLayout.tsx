@@ -1,8 +1,10 @@
+import { useContext, useEffect, useMemo } from 'react';
+import { useMutation, useQuery } from 'react-query';
 import { Route } from 'react-router-hoc';
-import { useContext } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 import Context from '../../context/Context';
+import { api, apiRoutes } from '../../api';
 import clsx from 'clsx';
 
 import styles from './Activity.module.scss';
@@ -71,6 +73,11 @@ const reportsByMonth = {
 export const ActivityLayout = ActivityLayoutRoute(() => {
   const { currentTheme } = useContext(Context);
 
+  const getStatisticQuery = () => api.get(apiRoutes.activity).then((res) => res.data);
+  const { data, isLoading, isFetching, refetch } = useQuery('statisticQuery', () => getStatisticQuery());
+
+  const filteredStats = useMemo(() => (data ? data : []), [data]);
+
   const CustomTooltip = ({
     active,
     payload,
@@ -84,6 +91,7 @@ export const ActivityLayout = ActivityLayoutRoute(() => {
     name?: string;
   }) => {
     if (active && payload) {
+      console.log(active, payload, label, name);
       return (
         <div className={styles.customTooltip}>
           <p>{label}</p>
@@ -115,7 +123,7 @@ export const ActivityLayout = ActivityLayoutRoute(() => {
         </h2>
         <ResponsiveContainer width="100%" height={400}>
           <BarChart
-            // width={500}
+            width={500}
             height={400}
             data={reportsByMonth.data}
             margin={{

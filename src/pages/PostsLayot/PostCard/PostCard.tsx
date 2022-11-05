@@ -20,7 +20,7 @@ export const PostCard = ({ src, title, text, theme }: PostCardProps) => {
         theme && theme === 3 && [styles.cardWrapper, styles.cardWrapperClassic],
       )}
     >
-      <img className={styles.img} src={src} />
+      <img className={styles.img} src={`http://localhost:5000/${src}`} />
       <div className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{title}</div>
       <div className={clsx(theme && theme === 1 ? [styles.text, styles.titleLight] : styles.text)}>{text}</div>
       <div className={styles.info}>

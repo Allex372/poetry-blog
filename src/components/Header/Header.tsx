@@ -1,5 +1,7 @@
 import React, { useEffect, useState, FC } from 'react';
 import Button from '@material-ui/core/Button';
+import { useMutation } from 'react-query';
+import { toast } from 'react-toastify';
 import clsx from 'clsx';
 
 import {
@@ -18,8 +20,10 @@ import { localStorageManager } from '../../services';
 import { CustomDialog } from '../Dialog';
 import { CreatePostForm } from '../CreatePostForm';
 import { useAuth } from '../../context';
+import { api, apiRoutes } from '../../api';
 
 import styles from './Header.module.scss';
+import axios from 'axios';
 
 const Themes = [
   { id: 1, name: 'Dark' },
@@ -35,7 +39,7 @@ interface ThemeInterface {
 interface PostInterface {
   title?: string;
   text?: string;
-  img?: string | Blob;
+  img?: File;
 }
 
 interface HeaderInterface {
@@ -72,10 +76,23 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
     setOpenSideBar(!openSideBar);
   };
 
-  const handleCreatePost = (value: PostInterface) => {
+  const handleCreatePost = (value: any) => {
     const formData = new FormData();
-    value?.img && formData.append('file', value?.img);
-    console.log(value);
+    formData.append('title', value.title);
+    formData.append('text', value.text);
+    formData.append('picture', value.file);
+    axios
+      .request({
+        method: 'post',
+        url: 'http://localhost:5000/posts',
+        data: formData,
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          setOpenCreatePostDialog(false);
+          toast.success('Post Created'); //TODO configure the module
+        }
+      });
   };
 
   const handleCloseSelectedDialog = () => setOpenCreatePostDialog(false);
