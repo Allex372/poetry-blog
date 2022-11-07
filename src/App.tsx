@@ -2,10 +2,9 @@ import React from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { getLinks } from 'react-router-hoc';
 
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { BaseLayout, UnAuthLayout } from './components';
-import { PostsLayout, ActivityLayout, LoginPage } from './pages';
-import { useAuth } from './context';
+import { PostsLayout, ActivityLayout, LoginPage, ClientAccount } from './pages';
+// import { useAuth } from './context';
 
 import './App.css';
 
@@ -13,6 +12,7 @@ export const links = getLinks({
   PostsLayout,
   ActivityLayout,
   LoginPage,
+  ClientAccount,
 });
 
 const UnAuthRoutes = () => (
@@ -28,12 +28,13 @@ const AuthRoutes = () => (
     <Switch>
       <PostsLayout />
       <ActivityLayout />
+      <ClientAccount />
     </Switch>
   </BaseLayout>
 );
 
 const App = () => {
-  const { isAuthenticated, isInitializing } = useAuth();
+  // const { isAuthenticated, isInitializing } = useAuth();
 
   // const isAuthenticated = false;
 
