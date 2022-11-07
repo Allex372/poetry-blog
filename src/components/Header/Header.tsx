@@ -1,5 +1,7 @@
 import React, { useEffect, useState, FC } from 'react';
 import Button from '@material-ui/core/Button';
+// import { useMutation } from 'react-query';
+import { toast } from 'react-toastify';
 import clsx from 'clsx';
 
 import {
@@ -18,8 +20,10 @@ import { localStorageManager } from '../../services';
 import { CustomDialog } from '../Dialog';
 import { CreatePostForm } from '../CreatePostForm';
 import { useAuth } from '../../context';
+// import { api, apiRoutes } from '../../api';
 
 import styles from './Header.module.scss';
+import axios from 'axios';
 
 const Themes = [
   { id: 1, name: 'Dark' },
@@ -32,11 +36,11 @@ interface ThemeInterface {
   name: string;
 }
 
-interface PostInterface {
-  title?: string;
-  text?: string;
-  img?: ImageData;
-}
+// interface PostInterface {
+//   title?: string;
+//   text?: string;
+//   img?: File;
+// }
 
 interface HeaderInterface {
   changeTheme: (id: number | string | null) => void;
@@ -51,6 +55,7 @@ const btnStyle = { backgroundColor: '#00b8ff', color: 'white', fontWeight: 'bold
 
 export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
   const { userData } = useAuth();
+  // const { isRefetch } = useContext(RefetchContext);
 
   // const currentRole = RolesEnum.Admin;
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
@@ -72,8 +77,29 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
     setOpenSideBar(!openSideBar);
   };
 
-  const handleCreatePost = (value: PostInterface) => {
-    console.log(value);
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
+
+  // eslint-disable-next-line
+  const handleCreatePost = (value: any) => {
+    const formData = new FormData();
+    formData.append('title', value.title);
+    formData.append('text', value.text);
+    formData.append('picture', value.file);
+    userData && formData.append('userID', userData.id);
+    axios
+      .request({
+        method: 'post',
+        url: 'http://localhost:5000/posts',
+        data: formData,
+      })
+      .then((res) => {
+        if (res.status == 200) {
+          setOpenCreatePostDialog(false);
+          toast.success('Post Created'); //TODO configure the module
+        }
+      });
   };
 
   const handleCloseSelectedDialog = () => setOpenCreatePostDialog(false);
@@ -85,10 +111,6 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
     }
     handleGetTheme();
   }, []);
-
-  //   useEffect(() => {
-  //     console.log(currentTheme);
-  //   }, [currentTheme]);
 
   return (
     <>
@@ -204,6 +226,29 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
                     )}
                   >
                     Activity
+                  </p>
+                </div>
+              </SidebarNavItem>
+            )}
+
+            {userData && (
+              <SidebarNavItem className={styles.linkStyle} route={links.ClientAccount({ id: userData?._id })}>
+                <div className={styles.iconWrapper}>
+                  <ActivityIcon
+                    className={clsx(
+                      currentTheme == '1' && [styles.sideBarIcon, styles.sideBarActiveIconDarkTheme],
+                      currentTheme == '2' && [styles.sideBarIcon, styles.sideBarActiveIconLightTheme],
+                      currentTheme == '3' && [styles.sideBarIcon, styles.sideBarActiveIconClassicTheme],
+                    )}
+                  />
+                  <p
+                    className={clsx(
+                      currentTheme == '1' && [styles.sidebarText, styles.sidebarTextDarkTheme],
+                      currentTheme == '2' && [styles.sidebarText, styles.sidebarTextLightTheme],
+                      currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
+                    )}
+                  >
+                    My Account
                   </p>
                 </div>
               </SidebarNavItem>

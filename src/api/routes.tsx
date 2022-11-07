@@ -4,4 +4,6 @@ export const apiRoutes = {
   signUp: '/registration',
   login: '/login',
   account: '/account',
+  posts: '/posts',
+  activity: '/posts/activity',
 };

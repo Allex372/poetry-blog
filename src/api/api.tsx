@@ -31,9 +31,10 @@ api.interceptors.response.use(
     if (error.response.status === 401) {
       try {
         const refreshToken = localStorageManager.getItem(REFRESH_TOKEN);
+
         const response = await axios.post(
           `${apiRoutes.baseURL}${apiRoutes.refresh}`,
-          {},
+          // {},
           {
             headers: {
               ['Authorization']: refreshToken,
@@ -41,7 +42,6 @@ api.interceptors.response.use(
           },
         );
 
-        console.log(response);
         if (response.status == 200) {
           const { access_token, refresh_token: newRefreshToken } = response.data;
 
@@ -61,8 +61,9 @@ api.interceptors.response.use(
           return;
         }
       } catch (err) {
-        localStorageManager.removeItem(TOKEN), localStorageManager.removeItem(REFRESH_TOKEN);
-        AuthEmitter.emit('interceptorError');
+        // localStorageManager.removeItem(TOKEN), localStorageManager.removeItem(REFRESH_TOKEN);
+        // AuthEmitter.emit('interceptorError');
+        console.log(err);
       }
     }
 
