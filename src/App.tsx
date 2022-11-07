@@ -3,7 +3,7 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 import { getLinks } from 'react-router-hoc';
 
 import { BaseLayout, UnAuthLayout } from './components';
-import { PostsLayout, ActivityLayout, LoginPage } from './pages';
+import { PostsLayout, ActivityLayout, LoginPage, ClientAccount } from './pages';
 // import { useAuth } from './context';
 
 import './App.css';
@@ -12,6 +12,7 @@ export const links = getLinks({
   PostsLayout,
   ActivityLayout,
   LoginPage,
+  ClientAccount,
 });
 
 const UnAuthRoutes = () => (
@@ -27,6 +28,7 @@ const AuthRoutes = () => (
     <Switch>
       <PostsLayout />
       <ActivityLayout />
+      <ClientAccount />
     </Switch>
   </BaseLayout>
 );

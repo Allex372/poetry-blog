@@ -1,6 +1,6 @@
 import React, { useEffect, useState, FC } from 'react';
 import Button from '@material-ui/core/Button';
-import { useMutation } from 'react-query';
+// import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
 import clsx from 'clsx';
 
@@ -20,7 +20,7 @@ import { localStorageManager } from '../../services';
 import { CustomDialog } from '../Dialog';
 import { CreatePostForm } from '../CreatePostForm';
 import { useAuth } from '../../context';
-import { api, apiRoutes } from '../../api';
+// import { api, apiRoutes } from '../../api';
 
 import styles from './Header.module.scss';
 import axios from 'axios';
@@ -36,11 +36,11 @@ interface ThemeInterface {
   name: string;
 }
 
-interface PostInterface {
-  title?: string;
-  text?: string;
-  img?: File;
-}
+// interface PostInterface {
+//   title?: string;
+//   text?: string;
+//   img?: File;
+// }
 
 interface HeaderInterface {
   changeTheme: (id: number | string | null) => void;
@@ -55,6 +55,7 @@ const btnStyle = { backgroundColor: '#00b8ff', color: 'white', fontWeight: 'bold
 
 export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
   const { userData } = useAuth();
+  // const { isRefetch } = useContext(RefetchContext);
 
   // const currentRole = RolesEnum.Admin;
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
@@ -76,11 +77,17 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
     setOpenSideBar(!openSideBar);
   };
 
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
+
+  // eslint-disable-next-line
   const handleCreatePost = (value: any) => {
     const formData = new FormData();
     formData.append('title', value.title);
     formData.append('text', value.text);
     formData.append('picture', value.file);
+    userData && formData.append('userID', userData.id);
     axios
       .request({
         method: 'post',
@@ -152,13 +159,13 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
               currentTheme == '3' && [styles.sideBarWrapperOpen, styles.sideBarWrapperOpenClassicTheme],
             )}
           >
-            {/* {userData?.role === RolesEnum.Admin && ( */}
-            <div className={styles.buttonWrapper}>
-              <Button style={btnStyle} onClick={() => setOpenCreatePostDialog(true)} variant="contained">
-                Create Post
-              </Button>
-            </div>
-            {/* )} */}
+            {userData?.role === RolesEnum.Admin && (
+              <div className={styles.buttonWrapper}>
+                <Button style={btnStyle} onClick={() => setOpenCreatePostDialog(true)} variant="contained">
+                  Create Post
+                </Button>
+              </div>
+            )}
             <SidebarNavItem className={styles.linkStyle} route={links.PostsLayout()}>
               <div className={styles.iconWrapper}>
                 <HomeIcon
@@ -219,6 +226,29 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
                     )}
                   >
                     Activity
+                  </p>
+                </div>
+              </SidebarNavItem>
+            )}
+
+            {userData && (
+              <SidebarNavItem className={styles.linkStyle} route={links.ClientAccount({ id: userData?._id })}>
+                <div className={styles.iconWrapper}>
+                  <ActivityIcon
+                    className={clsx(
+                      currentTheme == '1' && [styles.sideBarIcon, styles.sideBarActiveIconDarkTheme],
+                      currentTheme == '2' && [styles.sideBarIcon, styles.sideBarActiveIconLightTheme],
+                      currentTheme == '3' && [styles.sideBarIcon, styles.sideBarActiveIconClassicTheme],
+                    )}
+                  />
+                  <p
+                    className={clsx(
+                      currentTheme == '1' && [styles.sidebarText, styles.sidebarTextDarkTheme],
+                      currentTheme == '2' && [styles.sidebarText, styles.sidebarTextLightTheme],
+                      currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
+                    )}
+                  >
+                    My Account
                   </p>
                 </div>
               </SidebarNavItem>
