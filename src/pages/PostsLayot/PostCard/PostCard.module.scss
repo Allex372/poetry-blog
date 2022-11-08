@@ -9,6 +9,17 @@
   margin-bottom: 16px;
 }
 
+.textWrapper {
+  display: flex;
+}
+
+.headerWrapper {
+  padding-left: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .cardWrapperClassic {
   background-color: white;
 }
@@ -64,8 +75,23 @@
   cursor: pointer;
 }
 
+.bucketIcon {
+  margin-top: 24px;
+  padding-right: 16px;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+
 .iconLight {
   path {
     stroke: #808080;
+  }
+}
+
+.iconBucketLight {
+  path {
+    stroke: #808080;
+    fill: #808080;
   }
 }

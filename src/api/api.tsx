@@ -4,7 +4,7 @@ import { apiRoutes } from './routes';
 import { localStorageManager } from '../services';
 import { REFRESH_TOKEN, TOKEN } from '../consts';
 import { isValidToken } from '../utils';
-import { AuthEmitter } from '../context';
+// import { AuthEmitter } from '../context';
 
 // const rememberMe = localStorage.getItem(REMEMBER_ME);
 

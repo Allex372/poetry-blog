@@ -13,6 +13,7 @@ import {
   SettingsIcon,
   CustomizingIcon,
   ChoosenIcon,
+  UserIcon,
 } from '../../icons';
 import { SidebarNavItem } from './SidebarItems';
 import { links } from '../../App';
@@ -88,6 +89,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
     formData.append('text', value.text);
     formData.append('picture', value.file);
     userData && formData.append('userID', userData.id);
+    userData && formData.append('userName', userData.name);
     axios
       .request({
         method: 'post',
@@ -209,7 +211,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
             </SidebarNavItem>
 
             {userData?.role === RolesEnum.Admin && (
-              <SidebarNavItem className={styles.linkStyle} route={links.ActivityLayout()}>
+              <SidebarNavItem className={styles.linkStyle} route={links.ActivityLayout({ id: userData?._id })}>
                 <div className={styles.iconWrapper}>
                   <ActivityIcon
                     className={clsx(
@@ -234,7 +236,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
             {userData && (
               <SidebarNavItem className={styles.linkStyle} route={links.ClientAccount({ id: userData?._id })}>
                 <div className={styles.iconWrapper}>
-                  <ActivityIcon
+                  <UserIcon
                     className={clsx(
                       currentTheme == '1' && [styles.sideBarIcon, styles.sideBarActiveIconDarkTheme],
                       currentTheme == '2' && [styles.sideBarIcon, styles.sideBarActiveIconLightTheme],

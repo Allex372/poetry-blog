@@ -1,4 +1,5 @@
-import { ThumbsUp } from '../../../icons';
+import { useEffect } from 'react';
+import { ThumbsUp, DeleteIcon } from '../../../icons';
 import clsx from 'clsx';
 
 import styles from './PostCard.module.scss';
@@ -10,27 +11,47 @@ type PostCardProps = {
   text?: string;
   theme: number | undefined | null | string;
   style?: boolean;
+  userName?: string;
+  onDelete?: () => void;
+  key: string;
 };
 
-export const PostCard = ({ src, title, text, theme, style }: PostCardProps) => {
+export const PostCard = ({ src, title, text, theme, userName, onDelete, key }: PostCardProps) => {
+  useEffect(() => {
+    console.log(onDelete);
+  }, [onDelete]);
   return (
-    <div
-      style={{ marginLeft: '16px' }}
-      className={clsx(
-        theme && theme === 1 && [styles.cardWrapper, styles.cardWrapperDark],
-        theme && theme === 2 && [styles.cardWrapper, styles.cardWrapperLight],
-        theme && theme === 3 && [styles.cardWrapper, styles.cardWrapperClassic],
-      )}
-    >
-      <img className={styles.img} src={`http://localhost:5000/${src}`} />
-      <div className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{title}</div>
-      <div className={clsx(theme && theme === 1 ? [styles.text, styles.titleLight] : styles.text)}>{text}</div>
-      <div className={styles.info}>
-        <p className={styles.comments}>9 comments</p>
-        <div className={styles.likes}>
-          <ThumbsUp className={clsx(theme && theme === 1 ? [styles.icon, styles.iconLight] : styles.icon)} />
+    <>
+      <div
+        style={{ marginLeft: '16px' }}
+        className={clsx(
+          theme && theme === 1 && [styles.cardWrapper, styles.cardWrapperDark],
+          theme && theme === 2 && [styles.cardWrapper, styles.cardWrapperLight],
+          theme && theme === 3 && [styles.cardWrapper, styles.cardWrapperClassic],
+        )}
+      >
+        <div className={styles.headerWrapper}>
+          <div className={styles.textWrapper}>
+            <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>Created by:</p>
+            <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{userName}</p>
+          </div>
+          <div>
+            <DeleteIcon
+              onClick={onDelete}
+              className={clsx(theme && theme === 1 ? [styles.icon, styles.iconBucketLight] : styles.bucketIcon)}
+            />
+          </div>
+        </div>
+        <img className={styles.img} src={`http://localhost:5000/${src}`} />
+        <div className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{title}</div>
+        <div className={clsx(theme && theme === 1 ? [styles.text, styles.titleLight] : styles.text)}>{text}</div>
+        <div className={styles.info}>
+          <p className={styles.comments}>9 comments</p>
+          <div className={styles.likes}>
+            <ThumbsUp className={clsx(theme && theme === 1 ? [styles.icon, styles.iconLight] : styles.icon)} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

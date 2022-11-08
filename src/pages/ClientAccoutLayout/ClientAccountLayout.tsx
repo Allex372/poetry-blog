@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useContext } from 'react';
+import { useMemo, useContext } from 'react';
 import { Route } from 'react-router-hoc';
-import { toast } from 'react-toastify';
-import { useHistory } from 'react-router-dom';
+// import { toast } from 'react-toastify';
+// import { useHistory } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { PostCard } from '../PostsLayot/PostCard';
 
-import { LoginForm } from '../../components';
+// import { LoginForm } from '../../components';
 import Context from '../../context/Context';
-import { useAuth } from '../../context';
-import { HttpErrorResponse, LoginFormValues } from '../../types';
-import { links } from '../../App';
+// import { useAuth } from '../../context';
+import { PostInterface } from '../../types';
+// import { links } from '../../App';
 import { api, apiRoutes } from '../../api';
 // import clsx from 'clsx';
 
@@ -32,20 +32,20 @@ export const ClientAccount = ClientAccountRoute(
     const { currentTheme } = useContext(Context);
 
     const getPostsQuery = () => api.get(`${apiRoutes.posts}/${id}`).then((res) => res.data);
-    const { data, isLoading, isFetching, refetch } = useQuery('postsQuery', () => getPostsQuery());
+    const { data } = useQuery('postsQuery', () => getPostsQuery());
 
     const filteredPosts = useMemo(() => (data ? data : []), [data]);
 
     return (
       <div className={styles.formWrapper}>
-        {filteredPosts?.data?.map((el: any) => (
+        {filteredPosts?.data?.map((el: PostInterface) => (
           <PostCard
             key={el?._id}
             src={el?.picture}
             title={el?.title}
             text={el?.text}
+            userName={el?.userName}
             theme={currentTheme}
-            style={true}
           />
         ))}
       </div>

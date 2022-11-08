@@ -30,6 +30,7 @@ interface UserDataInterface {
   role: string;
   updatedAr: string;
   _id: string;
+  name: string;
 }
 
 interface AuthContextInterface {
