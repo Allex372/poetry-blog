@@ -45,6 +45,8 @@
 }
 
 .text {
+  height: 50px;
+  overflow-y: auto;
   padding: 24px 16px 24px 16px;
 }
 
@@ -90,6 +92,8 @@
 }
 
 .iconBucketLight {
+  margin-top: 24px;
+  padding-right: 16px;
   path {
     stroke: #808080;
     fill: #808080;

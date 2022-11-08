@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { ThumbsUp, DeleteIcon } from '../../../icons';
 import clsx from 'clsx';
 
@@ -14,15 +13,15 @@ type PostCardProps = {
   userName?: string;
   onDelete?: () => void;
   key: string;
+  userID?: string;
+  creator?: string;
 };
 
-export const PostCard = ({ src, title, text, theme, userName, onDelete, key }: PostCardProps) => {
-  useEffect(() => {
-    console.log(onDelete);
-  }, [onDelete]);
+export const PostCard = ({ src, title, text, theme, userName, onDelete, userID, key, creator }: PostCardProps) => {
   return (
     <>
       <div
+        key={key}
         style={{ marginLeft: '16px' }}
         className={clsx(
           theme && theme === 1 && [styles.cardWrapper, styles.cardWrapperDark],
@@ -35,12 +34,14 @@ export const PostCard = ({ src, title, text, theme, userName, onDelete, key }: P
             <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>Created by:</p>
             <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{userName}</p>
           </div>
-          <div>
-            <DeleteIcon
-              onClick={onDelete}
-              className={clsx(theme && theme === 1 ? [styles.icon, styles.iconBucketLight] : styles.bucketIcon)}
-            />
-          </div>
+          {userID === creator && (
+            <div>
+              <DeleteIcon
+                onClick={onDelete}
+                className={clsx(theme && theme === 1 ? [styles.icon, styles.iconBucketLight] : styles.bucketIcon)}
+              />
+            </div>
+          )}
         </div>
         <img className={styles.img} src={`http://localhost:5000/${src}`} />
         <div className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{title}</div>

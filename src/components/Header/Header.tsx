@@ -2,6 +2,7 @@ import React, { useEffect, useState, FC } from 'react';
 import Button from '@material-ui/core/Button';
 // import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 
 import {
@@ -55,6 +56,7 @@ enum RolesEnum {
 const btnStyle = { backgroundColor: '#00b8ff', color: 'white', fontWeight: 'bold' };
 
 export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
+  const history = useHistory();
   const { userData } = useAuth();
   // const { isRefetch } = useContext(RefetchContext);
 
@@ -64,6 +66,9 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
   const [currentTheme, setCurrentTheme] = useState<number | null | string>();
   const [openCreatePostDialog, setOpenCreatePostDialog] = useState(false);
 
+  history.listen(() => {
+    setOpenSideBar(false);
+  });
   const handleGetTheme = () => {
     setCurrentTheme(localStorageManager.getItem('theme_Id'));
   };
@@ -77,10 +82,6 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
   const handleSideBarClick = () => {
     setOpenSideBar(!openSideBar);
   };
-
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
 
   // eslint-disable-next-line
   const handleCreatePost = (value: any) => {
@@ -99,7 +100,8 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
       .then((res) => {
         if (res.status == 200) {
           setOpenCreatePostDialog(false);
-          toast.success('Post Created'); //TODO configure the module
+          toast.success('Post Created');
+          setOpenSideBar(false);
         }
       });
   };
@@ -250,7 +252,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
                       currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
                     )}
                   >
-                    My Account
+                    My Posts
                   </p>
                 </div>
               </SidebarNavItem>

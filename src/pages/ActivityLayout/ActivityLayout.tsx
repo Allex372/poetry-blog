@@ -2,6 +2,7 @@ import { useContext, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { Route } from 'react-router-hoc';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Context from '../../context/Context';
 import { api, apiRoutes } from '../../api';
@@ -26,7 +27,7 @@ export const ActivityLayout = ActivityLayoutRoute(
     const { currentTheme } = useContext(Context);
 
     const getStatisticQuery = () => api.get(`${apiRoutes.activity}/${id}`).then((res) => res.data);
-    const { data } = useQuery('statisticQuery', () => getStatisticQuery());
+    const { data, isFetching, isLoading } = useQuery('statisticQuery', () => getStatisticQuery());
 
     const filteredStats = useMemo(() => (data ? data : []), [data]);
 
@@ -92,6 +93,8 @@ export const ActivityLayout = ActivityLayoutRoute(
 
       return <></>;
     };
+
+    if (isFetching || isLoading) return <CircularProgress />;
 
     return (
       <>

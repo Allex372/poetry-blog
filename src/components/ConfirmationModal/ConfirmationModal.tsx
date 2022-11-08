@@ -28,8 +28,8 @@ export const ConfirmationModal: FC<ConfirmationModalProps> = ({
       <p className={styles.text}>{text}</p>
     </div>
 
-    <div className="flex pt-24 justify-content-end col-12">
-      <Button className="ml-12" variant="contained" onClick={onClose}>
+    <div className={styles.btnWrapper}>
+      <Button style={btnStyle} variant="contained" onClick={onClose}>
         {cancelText ?? 'Cancel'}
       </Button>
       <LoadingButton variant="text" onClick={onSubmit} loading={isLoading}>

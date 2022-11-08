@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 interface CloseProps {
   className?: string;
@@ -6,9 +6,6 @@ interface CloseProps {
 }
 
 export const DeleteIcon = ({ className, onClick }: CloseProps) => {
-  useEffect(() => {
-    console.log(onClick);
-  }, [onClick]);
   return (
     <svg
       className={className}
