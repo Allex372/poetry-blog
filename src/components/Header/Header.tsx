@@ -2,6 +2,7 @@ import React, { useEffect, useState, FC } from 'react';
 import Button from '@material-ui/core/Button';
 // import { useMutation } from 'react-query';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 
 import {
@@ -13,6 +14,7 @@ import {
   SettingsIcon,
   CustomizingIcon,
   ChoosenIcon,
+  UserIcon,
 } from '../../icons';
 import { SidebarNavItem } from './SidebarItems';
 import { links } from '../../App';
@@ -54,6 +56,7 @@ enum RolesEnum {
 const btnStyle = { backgroundColor: '#00b8ff', color: 'white', fontWeight: 'bold' };
 
 export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
+  const history = useHistory();
   const { userData } = useAuth();
   // const { isRefetch } = useContext(RefetchContext);
 
@@ -63,6 +66,9 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
   const [currentTheme, setCurrentTheme] = useState<number | null | string>();
   const [openCreatePostDialog, setOpenCreatePostDialog] = useState(false);
 
+  history.listen(() => {
+    setOpenSideBar(false);
+  });
   const handleGetTheme = () => {
     setCurrentTheme(localStorageManager.getItem('theme_Id'));
   };
@@ -77,10 +83,6 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
     setOpenSideBar(!openSideBar);
   };
 
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
-
   // eslint-disable-next-line
   const handleCreatePost = (value: any) => {
     const formData = new FormData();
@@ -88,6 +90,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
     formData.append('text', value.text);
     formData.append('picture', value.file);
     userData && formData.append('userID', userData.id);
+    userData && formData.append('userName', userData.name);
     axios
       .request({
         method: 'post',
@@ -97,7 +100,8 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
       .then((res) => {
         if (res.status == 200) {
           setOpenCreatePostDialog(false);
-          toast.success('Post Created'); //TODO configure the module
+          toast.success('Post Created');
+          setOpenSideBar(false);
         }
       });
   };
@@ -209,7 +213,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
             </SidebarNavItem>
 
             {userData?.role === RolesEnum.Admin && (
-              <SidebarNavItem className={styles.linkStyle} route={links.ActivityLayout()}>
+              <SidebarNavItem className={styles.linkStyle} route={links.ActivityLayout({ id: userData?._id })}>
                 <div className={styles.iconWrapper}>
                   <ActivityIcon
                     className={clsx(
@@ -234,7 +238,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
             {userData && (
               <SidebarNavItem className={styles.linkStyle} route={links.ClientAccount({ id: userData?._id })}>
                 <div className={styles.iconWrapper}>
-                  <ActivityIcon
+                  <UserIcon
                     className={clsx(
                       currentTheme == '1' && [styles.sideBarIcon, styles.sideBarActiveIconDarkTheme],
                       currentTheme == '2' && [styles.sideBarIcon, styles.sideBarActiveIconLightTheme],
@@ -248,7 +252,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
                       currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
                     )}
                   >
-                    My Account
+                    My Posts
                   </p>
                 </div>
               </SidebarNavItem>
