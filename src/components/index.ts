@@ -7,3 +7,4 @@ export * from './LoadingButton';
 export * from './UnAuthLayout';
 export * from './LoginForm';
 export * from './PassVisibilityBtn';
+export * from './ConfirmationModal';
