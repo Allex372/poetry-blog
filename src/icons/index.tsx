@@ -10,3 +10,5 @@ export * from './ImageIcon';
 export * from './ActivityIcon';
 export * from './EyeIcon';
 export * from './EyeIconClose';
+export * from './UserIcon';
+export * from './DeleteIcon';

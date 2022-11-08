@@ -5,5 +5,6 @@ export const apiRoutes = {
   login: '/login',
   account: '/account',
   posts: '/posts',
+  deletePosts: '/posts/delete',
   activity: '/posts/activity',
 };

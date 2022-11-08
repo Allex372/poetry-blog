@@ -7,6 +7,8 @@ import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from './context';
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from './api';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -15,6 +17,7 @@ root.render(
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <App />
+          <ToastContainer position="bottom-center" autoClose={5000} closeButton={false} />
         </AuthProvider>
       </QueryClientProvider>
     </React.StrictMode>
