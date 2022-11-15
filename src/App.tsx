@@ -4,7 +4,7 @@ import { getLinks } from 'react-router-hoc';
 
 import { BaseLayout, UnAuthLayout } from './components';
 import { PostsLayout, ActivityLayout, LoginPage, ClientAccount } from './pages';
-// import { useAuth } from './context';
+import { useAuth } from './context';
 
 import './App.css';
 
@@ -34,7 +34,7 @@ const AuthRoutes = () => (
 );
 
 const App = () => {
-  // const { isAuthenticated, isInitializing } = useAuth();
+  const { isAuthenticated } = useAuth();
 
   // const isAuthenticated = false;
 
@@ -43,13 +43,14 @@ const App = () => {
   // }
   return (
     <Switch>
-      <Redirect exact from="/" to={links.PostsLayout()} />
+      <Redirect exact from="/" to={isAuthenticated ? links.PostsLayout() : links.LoginPage()} />
 
       <Route path={links.LoginPage()}>
         <UnAuthRoutes />
       </Route>
-      <AuthRoutes />
-      {/* {isAuthenticated ? <AuthRoutes /> : <Redirect to={links.LoginPage()} />} */}
+      {/* <AuthRoutes />
+      <UnAuthRoutes /> */}
+      {isAuthenticated ? <AuthRoutes /> : <Redirect to={links.LoginPage()} />}
     </Switch>
   );
 };

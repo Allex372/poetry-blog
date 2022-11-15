@@ -1,5 +1,13 @@
-import { ThumbsUp, DeleteIcon } from '../../../icons';
+import { useState } from 'react';
+import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-material-ui';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 import clsx from 'clsx';
+
+import { ThumbsUp, DeleteIcon } from '../../../icons';
+import { Comment } from '../../../types';
+import { useAuth } from '../../../context';
 
 import styles from './PostCard.module.scss';
 
@@ -12,16 +20,60 @@ type PostCardProps = {
   style?: boolean;
   userName?: string;
   onDelete?: () => void;
-  key: string;
+  postID: string;
   userID?: string;
   creator?: string;
+  comments?: Comment[];
+  postsRefetch?: () => void;
 };
 
-export const PostCard = ({ src, title, text, theme, userName, onDelete, userID, key, creator }: PostCardProps) => {
+export const PostCard = ({
+  src,
+  title,
+  text,
+  theme,
+  userName,
+  onDelete,
+  userID,
+  postID,
+  creator,
+  comments,
+  postsRefetch,
+}: PostCardProps) => {
+  const { userData } = useAuth();
+
+  const [postCommentsId, setPostCommentsId] = useState<string | null>(null);
+
+  const handleOpenComments = (postID: string) => {
+    postCommentsId === postID ? setPostCommentsId(null) : setPostCommentsId(postID);
+  };
+
+  const handleWriteComment = async (value: string, postID: string) => {
+    if (userData) {
+      const values = {
+        text: value,
+        postID: postID,
+        userID: userData._id,
+      };
+      axios
+        .request({
+          method: 'post',
+          url: 'http://localhost:5000/comments',
+          data: values,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            toast.success('Commented');
+            postsRefetch && postsRefetch();
+          }
+        });
+    }
+  };
+
   return (
     <>
       <div
-        key={key}
+        key={postID}
         style={{ marginLeft: '16px' }}
         className={clsx(
           theme && theme === 1 && [styles.cardWrapper, styles.cardWrapperDark],
@@ -31,7 +83,9 @@ export const PostCard = ({ src, title, text, theme, userName, onDelete, userID, 
       >
         <div className={styles.headerWrapper}>
           <div className={styles.textWrapper}>
-            <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>Created by:</p>
+            <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>
+              Created by:&nbsp;
+            </p>
             <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{userName}</p>
           </div>
           {userID === creator && (
@@ -46,12 +100,51 @@ export const PostCard = ({ src, title, text, theme, userName, onDelete, userID, 
         <img className={styles.img} src={`http://localhost:5000/${src}`} />
         <div className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{title}</div>
         <div className={clsx(theme && theme === 1 ? [styles.text, styles.titleLight] : styles.text)}>{text}</div>
-        <div className={styles.info}>
-          <p className={styles.comments}>9 comments</p>
-          <div className={styles.likes}>
-            <ThumbsUp className={clsx(theme && theme === 1 ? [styles.icon, styles.iconLight] : styles.icon)} />
+
+        {comments && Object.keys(comments[0]).length !== 0 && (
+          <div className={styles.info}>
+            <div onClick={() => handleOpenComments(postID)}>
+              <p className={styles.comments}>{postCommentsId ? 'Hide comments' : 'Check comments'}</p>
+            </div>
+            <div className={styles.likes}>
+              <ThumbsUp className={clsx(theme && theme === 1 ? [styles.icon, styles.iconLight] : styles.icon)} />
+            </div>
           </div>
-        </div>
+        )}
+        {postCommentsId === postID &&
+          comments?.map((comment: Comment) => (
+            <div key={comment._id} className={styles.commentsWrapper}>
+              <div className={styles.comments}>
+                <div className={styles.userDataWrapper}>
+                  <p className={styles.userData}>{comment?.user?.name}:</p>
+                  <p className={styles.commentStyle}>{comment.text}</p>
+                </div>
+                <p className={styles.data}>{new Date(comment?.createdAt).toLocaleDateString()}</p>
+              </div>
+            </div>
+          ))}
+        {userData?._id && (
+          <Formik
+            initialValues={{ comment: '', id: postID }}
+            onSubmit={({ comment }) => {
+              handleWriteComment(comment, postID);
+            }}
+          >
+            {() => (
+              <Form className={styles.formWrapper}>
+                <div className={styles.inputWrapper}>
+                  <Field
+                    component={TextField}
+                    name="comment"
+                    label="Write comment"
+                    type="text"
+                    InputProps={{ disableUnderline: true }}
+                  />
+                </div>
+              </Form>
+            )}
+          </Formik>
+        )}
       </div>
     </>
   );
