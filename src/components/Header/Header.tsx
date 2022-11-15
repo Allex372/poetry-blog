@@ -1,13 +1,12 @@
 import React, { useEffect, useState, FC } from 'react';
 import Button from '@material-ui/core/Button';
-// import { useMutation } from 'react-query';
+import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 
 import {
   MenuIcon,
-  SearchIcon,
   CloseIcon,
   HomeIcon,
   ActivityIcon,
@@ -57,7 +56,7 @@ const btnStyle = { backgroundColor: '#00b8ff', color: 'white', fontWeight: 'bold
 
 export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
   const history = useHistory();
-  const { userData } = useAuth();
+  const { userData, logout } = useAuth();
   // const { isRefetch } = useContext(RefetchContext);
 
   // const currentRole = RolesEnum.Admin;
@@ -66,6 +65,9 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
   const [currentTheme, setCurrentTheme] = useState<number | null | string>();
   const [openCreatePostDialog, setOpenCreatePostDialog] = useState(false);
 
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
   history.listen(() => {
     setOpenSideBar(false);
   });
@@ -104,6 +106,11 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
           setOpenSideBar(false);
         }
       });
+  };
+
+  const handleLogOut = () => {
+    logout();
+    history.push('/login');
   };
 
   const handleCloseSelectedDialog = () => setOpenCreatePostDialog(false);
@@ -146,13 +153,24 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
         )}
 
         <p className={styles.raibowText}>B</p>
-        <SearchIcon
+        {/* <SearchIcon
           className={clsx(
             currentTheme == '1' && [styles.menuIcon, styles.menuIconDarkTheme],
             currentTheme == '2' && [styles.menuIcon, styles.menuIconLightTheme],
             currentTheme == '3' && [styles.menuIcon, styles.menuIconClassicTheme],
           )}
-        />
+        /> */}
+        <div className={styles.buttonLogOut}>
+          {userData ? (
+            <Button style={btnStyle} variant="contained" onClick={() => handleLogOut()}>
+              Log Out
+            </Button>
+          ) : (
+            <NavLink style={btnStyle} to={links.LoginPage()}>
+              Log In
+            </NavLink>
+          )}
+        </div>
       </div>
       {openSideBar && (
         <>
@@ -163,9 +181,14 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
               currentTheme == '3' && [styles.sideBarWrapperOpen, styles.sideBarWrapperOpenClassicTheme],
             )}
           >
-            {userData?.role === RolesEnum.Admin && (
+            {userData && userData?.role === RolesEnum.Admin && (
               <div className={styles.buttonWrapper}>
-                <Button style={btnStyle} onClick={() => setOpenCreatePostDialog(true)} variant="contained">
+                <Button
+                  style={btnStyle}
+                  className={styles.createBtn}
+                  onClick={() => setOpenCreatePostDialog(true)}
+                  variant="contained"
+                >
                   Create Post
                 </Button>
               </div>
@@ -212,7 +235,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
               </div>
             </SidebarNavItem>
 
-            {userData?.role === RolesEnum.Admin && (
+            {userData && userData?.role === RolesEnum.Admin && (
               <SidebarNavItem className={styles.linkStyle} route={links.ActivityLayout({ id: userData?._id })}>
                 <div className={styles.iconWrapper}>
                   <ActivityIcon

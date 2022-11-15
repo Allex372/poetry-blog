@@ -8,12 +8,16 @@ import { isValidToken } from '../utils';
 import { REFRESH_TOKEN, TOKEN } from '../consts';
 // import { components } from 'generated/types';
 import { api, apiRoutes } from '../api';
-import { HttpErrorResponse, LoginFormValues, SignUpFormValuesRequest } from '../types';
+import { HttpErrorResponse, LoginFormValues, RegistrationFormValues } from '../types';
 
 // type AccountInfo = components['schemas']['AccountInfo'];
 // type RolePermissionsDTO = components['schemas']['RolePermissionsDTO'];
 
 export const AuthEmitter = new EventEmitter();
+
+type RegistrationType = {
+  status: number;
+};
 
 type LoginType = {
   success: boolean;
@@ -37,7 +41,7 @@ interface AuthContextInterface {
   isInitializing: boolean;
   isAuthenticated: boolean;
   userData: UserDataInterface | null;
-  signUp: (userData: SignUpFormValuesRequest) => Promise<void>;
+  signUp: (userData: RegistrationFormValues) => Promise<RegistrationType>;
   login: (userData: LoginFormValues) => Promise<LoginType>;
   //   verifyCode: (userData: VerificationFormValues) => Promise<void>;
   logout: () => void;
@@ -59,8 +63,8 @@ authAPI.interceptors.response.use(
   },
 );
 
-const signUpMutation = (userData: SignUpFormValuesRequest) =>
-  api.post(apiRoutes.signUp, userData).then((res) => res.data);
+const signUpMutation = (userData: RegistrationFormValues) =>
+  authAPI.post(apiRoutes.signUp, userData).then((res) => res.data);
 
 const loginMutation = (userData: LoginFormValues) => authAPI.post(apiRoutes.login, userData).then((res) => res.data);
 
@@ -100,7 +104,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
     loginMutation(values),
   );
 
-  const { mutateAsync: signUpRequestMutation } = useMutation('signUpMutation', (values: SignUpFormValuesRequest) =>
+  const { mutateAsync: signUpRequestMutation } = useMutation('signUpMutation', (values: RegistrationFormValues) =>
     signUpMutation(values),
   );
 
@@ -108,9 +112,10 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
     enabled: false,
   });
 
-  const signUp = async (userData: SignUpFormValuesRequest) => {
+  const signUp = async (userData: RegistrationFormValues) => {
     try {
-      await signUpRequestMutation(userData);
+      const data = await signUpRequestMutation(userData);
+      return data;
     } catch (e) {
       throw new Error((e as HttpErrorResponse).message);
     }
