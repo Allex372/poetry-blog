@@ -68,7 +68,8 @@ export const ClientAccount = ClientAccountRoute(
         <div className={styles.formWrapper}>
           {filteredPosts?.data?.map((el: PostInterface) => (
             <PostCard
-              key={el?._id}
+              key={el.id}
+              postID={el?._id}
               creator={el?.userID}
               src={el?.picture}
               title={el?.title}
