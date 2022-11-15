@@ -4,6 +4,12 @@ export interface LoginFormValues {
   rememberMe: boolean;
 }
 
+export interface RegistrationFormValues {
+  email: string;
+  password: string;
+  name: string;
+}
+
 export interface ForgotFormValues {
   email: string;
 }

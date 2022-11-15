@@ -46,7 +46,7 @@ export const CreatePostForm = ({ submitButtonTitle, onSubmit, close }: RoleFormP
             </label>
           </div>
           <div className={styles.inputWrapper}>
-            <Field component={TextField} name="text" label="Text" type="text" className="mb-24 mb-md-36" />
+            <Field component={TextField} name="text" label="Text" type="textarea" className="mb-24 mb-md-36" />
           </div>
 
           <div className={styles.buttonWrapper}>

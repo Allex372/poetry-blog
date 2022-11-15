@@ -60,7 +60,8 @@ export const PostsLayout = PostsLayoutRoute(() => {
       <div className={styles.wrapper}>
         {filteredPosts?.data?.map((el: PostInterface) => (
           <PostCard
-            key={el?._id}
+            key={el._id}
+            postID={el._id}
             creator={el?.userID}
             src={el?.picture}
             title={el?.title}
@@ -69,6 +70,8 @@ export const PostsLayout = PostsLayoutRoute(() => {
             theme={currentTheme}
             userID={userData?._id}
             onDelete={() => handleDeleteProject(el?._id)}
+            comments={el?.comments}
+            postsRefetch={refetch}
           />
         ))}
       </div>
