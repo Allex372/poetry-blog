@@ -78,6 +78,9 @@ export const ClientAccount = ClientAccountRoute(
               theme={currentTheme}
               userID={userData?._id}
               onDelete={() => handleDeleteProject(el?._id)}
+              comments={el?.comments}
+              postsRefetch={refetch}
+              canDeleteComment={true}
             />
           ))}
         </div>
