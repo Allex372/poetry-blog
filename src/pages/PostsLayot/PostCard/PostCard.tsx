@@ -2,7 +2,10 @@ import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { toast } from 'react-toastify';
+import { useMutation } from 'react-query';
 import axios from 'axios';
+import { ConfirmationModal, CustomDialog } from '../../../components';
+import { api, apiRoutes } from '../../../api';
 import clsx from 'clsx';
 
 import { ThumbsUp, DeleteIcon } from '../../../icons';
@@ -25,6 +28,7 @@ type PostCardProps = {
   creator?: string;
   comments?: Comment[];
   postsRefetch?: () => void;
+  canDeleteComment?: boolean;
 };
 
 export const PostCard = ({
@@ -39,14 +43,43 @@ export const PostCard = ({
   creator,
   comments,
   postsRefetch,
+  canDeleteComment,
 }: PostCardProps) => {
   const { userData } = useAuth();
 
+  const [showMore, setShowMore] = useState<boolean>(false);
   const [postCommentsId, setPostCommentsId] = useState<string | null>(null);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [commentsToDelete, setCommentsToDelete] = useState<string | null>(null);
+
+  const deleteCommentQuery = (id: string) => api.delete(`${apiRoutes.comments}/${id}`).then((res) => res.data);
+  const { mutateAsync: deletePostMutation } = useMutation(
+    'deleteCommentQuery',
+    (id: string) => deleteCommentQuery(id),
+    {
+      onSuccess: () => {
+        postsRefetch && postsRefetch();
+        setOpenDialog(false);
+        setCommentsToDelete(null);
+        toast.success('Comment has been successfully deleted');
+      },
+    },
+  );
 
   const handleOpenComments = (postID: string) => {
     postCommentsId === postID ? setPostCommentsId(null) : setPostCommentsId(postID);
   };
+
+  const handleDeleteComment = (id: string) => {
+    setOpenDialog(true);
+    setCommentsToDelete(id);
+  };
+
+  const handleDelete = () => {
+    commentsToDelete && deletePostMutation(commentsToDelete);
+  };
+
+  const handleCloseSelectedDialog = () => setOpenDialog(false);
 
   const handleWriteComment = async (value: string, postID: string) => {
     if (userData) {
@@ -99,7 +132,14 @@ export const PostCard = ({
         </div>
         <img className={styles.img} src={`http://localhost:5000/${src}`} />
         <div className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{title}</div>
-        <div className={clsx(theme && theme === 1 ? [styles.text, styles.titleLight] : styles.text)}>{text}</div>
+        <div className={clsx(theme && theme === 1 ? [styles.text, styles.titleLight] : styles.text)}>
+          {showMore ? text : `${text && text.substring(0, 40)}`}
+          {text && text.length > 40 && (
+            <span className={styles.moreTextStyle} onClick={() => setShowMore(!showMore)}>
+              {showMore ? 'Show less' : 'Show more'}
+            </span>
+          )}
+        </div>
 
         {comments && Object.keys(comments[0]).length !== 0 && (
           <div className={styles.info}>
@@ -116,8 +156,16 @@ export const PostCard = ({
             <div key={comment._id} className={styles.commentsWrapper}>
               <div className={styles.comments}>
                 <div className={styles.userDataWrapper}>
-                  <p className={styles.userData}>{comment?.user?.name}:</p>
-                  <p className={styles.commentStyle}>{comment.text}</p>
+                  <div className={styles.commentWrapper}>
+                    <p className={styles.userData}>{comment?.user?.name ? comment?.user?.name : 'Unknown User'}:</p>
+                    <p className={styles.commentStyle}>{comment.text}</p>
+                  </div>
+                  {canDeleteComment && (
+                    <DeleteIcon
+                      onClick={() => handleDeleteComment(comment?._id)}
+                      className={clsx(theme && theme === 1 ? [styles.icon, styles.iconBucketLight] : styles.bucketIcon)}
+                    />
+                  )}
                 </div>
                 <p className={styles.data}>{new Date(comment?.createdAt).toLocaleDateString()}</p>
               </div>
@@ -145,6 +193,18 @@ export const PostCard = ({
             )}
           </Formik>
         )}
+        <CustomDialog
+          open={openDialog}
+          header="Are you sure that you want delete this comment?"
+          // icon={<PlusIcon />}
+          onClose={handleCloseSelectedDialog}
+        >
+          <ConfirmationModal
+            text="You won`t be able to restore it"
+            onSubmit={handleDelete}
+            onClose={handleCloseSelectedDialog}
+          />
+        </CustomDialog>
       </div>
     </>
   );
