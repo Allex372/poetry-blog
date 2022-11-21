@@ -11,7 +11,7 @@ import { isValidToken } from '../utils';
 const api = axios.create({
   baseURL: apiRoutes.baseURL,
   headers: {
-    'content-type': 'application/json',
+    'Content-Type': 'application/json',
   },
 });
 
