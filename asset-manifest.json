@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/poetry-blog/static/css/main.25e94566.css",
+    "main.js": "/poetry-blog/static/js/main.bfbc0f66.js",
+    "static/js/787.a86f3764.chunk.js": "/poetry-blog/static/js/787.a86f3764.chunk.js",
+    "static/media/carlos-vega-7XbxPUdRtgw-unsplash.jpg": "/poetry-blog/static/media/carlos-vega-7XbxPUdRtgw-unsplash.49383f7e0797b1cf8158.jpg",
+    "index.html": "/poetry-blog/index.html",
+    "main.25e94566.css.map": "/poetry-blog/static/css/main.25e94566.css.map",
+    "main.bfbc0f66.js.map": "/poetry-blog/static/js/main.bfbc0f66.js.map",
+    "787.a86f3764.chunk.js.map": "/poetry-blog/static/js/787.a86f3764.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.25e94566.css",
+    "static/js/main.bfbc0f66.js"
+  ]
+}
