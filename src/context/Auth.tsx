@@ -32,7 +32,7 @@ interface UserDataInterface {
   id: string;
   password: string;
   role: string;
-  updatedAr: string;
+  updatedAt: string;
   _id: string;
   name: string;
 }
@@ -40,7 +40,9 @@ interface UserDataInterface {
 interface AuthContextInterface {
   isInitializing: boolean;
   isAuthenticated: boolean;
+  isLoading: boolean;
   userData: UserDataInterface | null;
+  // refetch: () => void;
   signUp: (userData: RegistrationFormValues) => Promise<RegistrationType>;
   login: (userData: LoginFormValues) => Promise<LoginType>;
   //   verifyCode: (userData: VerificationFormValues) => Promise<void>;
@@ -77,6 +79,7 @@ export const useAuth = () => useContext(AuthContext) as AuthContextInterface;
 export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
   //   const rememberMe = useMemo(() => !!localStorageManager.getItem(REMEMBER_ME), []);
   const [userData, setUserData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [token, setAuthToken] = useState(() => {
     const tokenFromStorage = localStorageManager.getItem(TOKEN);
 
@@ -108,7 +111,11 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
     signUpMutation(values),
   );
 
-  const { data: accountInfo, refetch } = useQuery('accountQuery', () => accountQuery(), {
+  const {
+    data: accountInfo,
+    refetch,
+    isLoading: userDataLoading,
+  } = useQuery('accountQuery', () => accountQuery(), {
     enabled: false,
   });
 
@@ -168,6 +175,10 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
   }, []);
 
   useEffect(() => {
+    userDataLoading ? setIsLoading(true) : setIsLoading(false);
+  }, [userDataLoading]);
+
+  useEffect(() => {
     token && refreshToken && refetch();
   }, [token, refreshToken]);
 
@@ -192,9 +203,11 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
         userData,
         updateAccountInfo: refetch,
         // verifyCode,
+        isLoading,
         signUp,
         login,
         handleAuth,
+        // refetch,
         logout,
       }}
     >

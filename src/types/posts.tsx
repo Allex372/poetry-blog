@@ -35,3 +35,12 @@ export interface User {
   __v: number;
   _id: string;
 }
+
+export interface UpdateUserInterface {
+  email?: string;
+  name?: string;
+  password?: string;
+  _id?: string;
+  updatedAt?: string;
+  createdAt: string;
+}
