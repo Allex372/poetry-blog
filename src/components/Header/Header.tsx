@@ -65,12 +65,10 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
   const [currentTheme, setCurrentTheme] = useState<number | null | string>();
   const [openCreatePostDialog, setOpenCreatePostDialog] = useState(false);
 
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
   history.listen(() => {
     setOpenSideBar(false);
   });
+
   const handleGetTheme = () => {
     setCurrentTheme(localStorageManager.getItem('theme_Id'));
   };
@@ -214,7 +212,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
               </div>
             </SidebarNavItem>
 
-            <SidebarNavItem className={styles.linkStyle} route={links.PostsLayout()}>
+            <SidebarNavItem className={styles.linkStyle} route={links.SettingsPage()}>
               <div className={styles.iconWrapper}>
                 <SettingsIcon
                   className={clsx(

@@ -31,8 +31,6 @@ export const ActivityLayout = ActivityLayoutRoute(
 
     const filteredStats = useMemo(() => (data ? data : []), [data]);
 
-    console.log(filteredStats);
-
     const CustomTooltip = ({
       active,
       payload,
