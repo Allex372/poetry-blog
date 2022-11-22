@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { Route } from 'react-router-hoc';
 import { Formik, Form, Field } from 'formik';
 import { useMutation } from 'react-query';
@@ -10,7 +10,7 @@ import { LoadingButton, PassVisibilityBtn } from '../../components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as Yup from 'yup';
 
-import Context from '../../context/Context';
+// import Context from '../../context/Context';
 // import logo from './img.jpeg'; // Tell webpack this JS file uses this image
 import { useAuth } from '../../context';
 import { api, apiRoutes } from '../../api';
@@ -27,7 +27,7 @@ const SettingsLayoutRoute = Route(
 
 export const SettingsPage = SettingsLayoutRoute(() => {
   const { userData, isLoading, updateAccountInfo } = useAuth();
-  const { currentTheme } = useContext(Context);
+  // const { currentTheme } = useContext(Context);
 
   const [isPassVisible, setIsPassVisible] = useState(false);
   //   const [userToUpdate, setUserToUpdate] = useState<UpdateUserInterface | null>({});
