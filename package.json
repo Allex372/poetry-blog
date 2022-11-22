@@ -1,5 +1,5 @@
 {
-  "homepage": "http://allex372.github.io/poetry-blog",
+  "homepage": "https://Allex372.github.io/poetry-blog",
   "name": "test-app",
   "version": "0.11.1",
   "private": true,
@@ -36,7 +36,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "predeploy": "npm run build",
+    "predeploy": "yarn run build",
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -62,7 +62,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.3",
-    "gh-pages": "^4.0.0"
+    "gh-pages": "^4.0.0",
+    "@types/react-router-dom": "^5.3.3"
   }
 }
