@@ -43,6 +43,7 @@ const App = () => {
   // if (isInitializing) {
   //   return <CircularProgress size={64} />;
   // }
+  console.log('any');
   return (
     <Switch>
       <Redirect exact from="/" to={isAuthenticated ? links.PostsLayout() : links.LoginPage()} />
