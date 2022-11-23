@@ -106,7 +106,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
       await axios
         .request({
           method: 'post',
-          url: 'http://localhost:5000/posts',
+          url: 'https://poetry-blog-nodejs.herokuapp.com/posts',
           data: newPost,
         })
         .then((res) => {
