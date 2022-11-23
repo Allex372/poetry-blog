@@ -84,26 +84,38 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
   };
 
   // eslint-disable-next-line
-  const handleCreatePost = (value: any) => {
+  const handleCreatePost = async (value: any) => {
     const formData = new FormData();
-    formData.append('title', value.title);
-    formData.append('text', value.text);
-    formData.append('picture', value.file);
-    userData && formData.append('userID', userData.id);
-    userData && formData.append('userName', userData.name);
-    axios
-      .request({
-        method: 'post',
-        url: 'http://localhost:5000/posts',
-        data: formData,
-      })
-      .then((res) => {
-        if (res.status == 200) {
-          setOpenCreatePostDialog(false);
-          toast.success('Post Created');
-          setOpenSideBar(false);
-        }
-      });
+    formData.append('file', value.file);
+    formData.append('upload_preset', 'vm30xf2h');
+
+    const uploadImg = await fetch('https://api.cloudinary.com/v1_1/dp0ftqcbc/image/upload', {
+      method: 'POST',
+      body: formData,
+    }).then((req) => req.json());
+
+    if (uploadImg.secure_url) {
+      const newPost = {
+        title: value.title,
+        text: value.text,
+        picture: uploadImg.secure_url,
+        userID: userData?._id,
+        userName: userData?.name,
+      };
+      await axios
+        .request({
+          method: 'post',
+          url: 'http://localhost:5000/posts',
+          data: newPost,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            setOpenCreatePostDialog(false);
+            toast.success('Post Created');
+            setOpenSideBar(false);
+          }
+        });
+    }
   };
 
   const handleLogOut = () => {
