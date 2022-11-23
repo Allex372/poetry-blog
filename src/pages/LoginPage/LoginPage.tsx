@@ -36,7 +36,8 @@ export const LoginPage = LoginPageRoute(() => {
   const handleLogin = async (values: LoginFormValues) => {
     try {
       const res = await login(values);
-      res.access_token && history.push(links.PostsLayout());
+      console.log(res);
+      res.data.access_token && history.push(links.PostsLayout());
     } catch (e) {
       toast.error((e as HttpErrorResponse).message);
     }

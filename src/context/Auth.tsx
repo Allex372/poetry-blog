@@ -20,10 +20,7 @@ type RegistrationType = {
 };
 
 type LoginType = {
-  success: boolean;
-  access_token?: string;
-  refresh_token?: string;
-  authCode: boolean;
+  data: { success: boolean; access_token?: string; refresh_token?: string; authCode: boolean };
 };
 
 interface UserDataInterface {
@@ -131,7 +128,7 @@ export const AuthProvider = ({ children }: PropsWithChildren<unknown>) => {
   const login = async (userData: LoginFormValues) => {
     try {
       const data = await loginRequestMutation(userData);
-      const { access_token, refresh_token } = data;
+      const { access_token, refresh_token } = data.data;
 
       access_token && refresh_token && setToken(access_token, refresh_token);
 

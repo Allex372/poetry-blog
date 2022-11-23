@@ -1,5 +1,5 @@
 export const apiRoutes = {
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: process.env.REACT_APP_API_HEROKU_URL,
   refresh: '/login/refresh',
   signUp: '/registration',
   login: '/login',
