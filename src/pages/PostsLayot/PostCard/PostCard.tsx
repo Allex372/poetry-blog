@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { toast } from 'react-toastify';
@@ -6,7 +6,7 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 import { ConfirmationModal, CustomDialog } from '../../../components';
 import { api, apiRoutes } from '../../../api';
-import Context from '../../../context/Context';
+// import Context from '../../../context/Context';
 import clsx from 'clsx';
 
 import { ThumbsUp, DeleteIcon } from '../../../icons';
@@ -24,6 +24,7 @@ type PostCardProps = {
   style?: boolean;
   userName?: string;
   onDelete?: () => void;
+  onOpen?: () => void;
   postID: string;
   userID?: string;
   creator?: string;
@@ -45,11 +46,12 @@ export const PostCard = ({
   comments,
   postsRefetch,
   canDeleteComment,
+  onOpen,
 }: PostCardProps) => {
   const { userData } = useAuth();
-  const { currentTheme } = useContext(Context);
 
-  console.log(currentTheme);
+  // todo add styles for text area in 1 theme
+  // const { currentTheme } = useContext(Context);
 
   const [showMore, setShowMore] = useState<boolean>(false);
   const [postCommentsId, setPostCommentsId] = useState<string | null>(null);
@@ -134,7 +136,7 @@ export const PostCard = ({
             </div>
           )}
         </div>
-        <img className={styles.img} src={src} />
+        <img className={styles.img} onClick={onOpen} src={src} />
         <div className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{title}</div>
         <div className={clsx(theme && theme === 1 ? [styles.text, styles.titleLight] : styles.text)}>
           {showMore ? (

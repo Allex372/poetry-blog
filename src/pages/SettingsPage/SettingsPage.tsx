@@ -10,8 +10,6 @@ import { LoadingButton, PassVisibilityBtn } from '../../components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as Yup from 'yup';
 
-// import Context from '../../context/Context';
-// import logo from './img.jpeg'; // Tell webpack this JS file uses this image
 import { useAuth } from '../../context';
 import { api, apiRoutes } from '../../api';
 import { UpdateUserInterface } from '../../types';
@@ -27,11 +25,8 @@ const SettingsLayoutRoute = Route(
 
 export const SettingsPage = SettingsLayoutRoute(() => {
   const { userData, isLoading, updateAccountInfo } = useAuth();
-  // const { currentTheme } = useContext(Context);
 
   const [isPassVisible, setIsPassVisible] = useState(false);
-  //   const [userToUpdate, setUserToUpdate] = useState<UpdateUserInterface | null>({});
-  //   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   const togglePasswordVisibility = useCallback(() => setIsPassVisible((prev) => !prev), []);
 
@@ -43,8 +38,6 @@ export const SettingsPage = SettingsLayoutRoute(() => {
     {
       onSuccess: () => {
         updateAccountInfo();
-        // setOpenDialog(false);
-        // setUserToUpdate(null);
         toast.success('User has been successfully updated');
       },
     },
