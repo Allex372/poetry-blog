@@ -22,7 +22,6 @@ import { localStorageManager } from '../../services';
 import { CustomDialog } from '../Dialog';
 import { CreatePostForm } from '../CreatePostForm';
 import { useAuth } from '../../context';
-// import { api, apiRoutes } from '../../api';
 
 import styles from './Header.module.scss';
 import axios from 'axios';
@@ -174,7 +173,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
         <div className={styles.buttonLogOut}>
           {userData ? (
             <Button style={btnStyle} variant="contained" onClick={() => handleLogOut()}>
-              Log Out
+              Out
             </Button>
           ) : (
             <NavLink style={btnStyle} to={links.LoginPage()}>
@@ -194,14 +193,16 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
           >
             {userData && userData?.role === RolesEnum.Admin && (
               <div className={styles.buttonWrapper}>
-                <Button
-                  style={btnStyle}
-                  className={styles.createBtn}
-                  onClick={() => setOpenCreatePostDialog(true)}
-                  variant="contained"
-                >
-                  Create Post
-                </Button>
+                <div className={styles.createBtn}>
+                  <Button
+                    style={btnStyle}
+                    className={styles.createBtn}
+                    onClick={() => setOpenCreatePostDialog(true)}
+                    variant="contained"
+                  >
+                    Create Post
+                  </Button>
+                </div>
               </div>
             )}
             <SidebarNavItem className={styles.linkStyle} route={links.PostsLayout()}>
