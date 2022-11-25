@@ -1,4 +1,4 @@
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, useField, FieldHookConfig } from 'formik';
 import { TextField } from 'formik-material-ui';
 import Button from '@material-ui/core/Button';
 import { LoadingButton } from '../LoadingButton';
@@ -22,6 +22,18 @@ type RoleFormProps = {
 const btnStyle = { color: 'black', fontWeight: 'bold' };
 
 export const CreatePostForm = ({ submitButtonTitle, onSubmit, close }: RoleFormProps) => {
+  const MyTextArea = (props: FieldHookConfig<string>) => {
+    // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
+    // which we can spread on <input> and alse replace ErrorMessage entirely.
+    const [field, meta] = useField(props);
+    return (
+      <>
+        {/* <label htmlFor={name}>{label}</label> */}
+        <textarea className={styles.textArea} {...field} />
+        {meta.touched && meta.error ? <div className="error">{meta.error}</div> : null}
+      </>
+    );
+  };
   return (
     <Formik initialValues={{ title: '', text: '' }} onSubmit={onSubmit}>
       {({ isSubmitting, setFieldValue, values }) => (
@@ -46,7 +58,8 @@ export const CreatePostForm = ({ submitButtonTitle, onSubmit, close }: RoleFormP
             </label>
           </div>
           <div className={styles.inputWrapper}>
-            <Field component={TextField} name="text" label="Text" type="textarea" className="mb-24 mb-md-36" />
+            {/* <Field component={TextField} name="text" label="Text" type="textarea" className="mb-24 mb-md-36" /> */}
+            <MyTextArea name="text" type="text" />
           </div>
 
           <div className={styles.buttonWrapper}>

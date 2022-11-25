@@ -1,12 +1,10 @@
 .formWrapper {
   display: flex;
   // flex-direction: column;
-  // justify-content: center;
+  justify-content: center;
   width: 100%;
   align-items: baseline;
   margin-top: 16px;
   overflow-y: auto;
   flex-wrap: wrap;
-  padding-left: 10%;
-  padding-right: 10%;
 }
