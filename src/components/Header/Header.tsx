@@ -37,14 +37,9 @@ interface ThemeInterface {
   name: string;
 }
 
-// interface PostInterface {
-//   title?: string;
-//   text?: string;
-//   img?: File;
-// }
-
 interface HeaderInterface {
   changeTheme: (id: number | string | null) => void;
+  handleNeedRefetch: (isRefetch: boolean) => void;
 }
 
 enum RolesEnum {
@@ -54,12 +49,10 @@ enum RolesEnum {
 
 const btnStyle = { backgroundColor: '#00b8ff', color: 'white', fontWeight: 'bold' };
 
-export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
+export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) => {
   const history = useHistory();
   const { userData, logout } = useAuth();
-  // const { isRefetch } = useContext(RefetchContext);
 
-  // const currentRole = RolesEnum.Admin;
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
   const [isThemeOpen, setIsThemeOpen] = useState<boolean>(false);
   const [currentTheme, setCurrentTheme] = useState<number | null | string>();
@@ -113,6 +106,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
             setOpenCreatePostDialog(false);
             toast.success('Post Created');
             setOpenSideBar(false);
+            handleNeedRefetch(true);
           }
         });
     }
@@ -142,34 +136,30 @@ export const Header: FC<HeaderInterface> = ({ changeTheme }) => {
           currentTheme == '3' && [styles.wrapper, styles.wrapperClassicTheme],
         )}
       >
-        {openSideBar ? (
-          <CloseIcon
-            className={clsx(
-              currentTheme == '1' && [styles.menuIcon, styles.menuIconDarkTheme],
-              currentTheme == '2' && [styles.menuIcon, styles.menuIconLightTheme],
-              currentTheme == '3' && [styles.menuIcon, styles.menuIconClassicTheme],
-            )}
-            onClick={handleSideBarClick}
-          />
-        ) : (
-          <MenuIcon
-            className={clsx(
-              currentTheme == '1' && [styles.menuIcon, styles.themeIconDarkTheme],
-              currentTheme == '2' && [styles.menuIcon, styles.menuIconLightTheme],
-              currentTheme == '3' && [styles.menuIcon, styles.themeIconClassicTheme],
-            )}
-            onClick={handleSideBarClick}
-          />
-        )}
+        <div style={{ width: '75px' }}>
+          {openSideBar ? (
+            <CloseIcon
+              className={clsx(
+                currentTheme == '1' && [styles.menuIcon, styles.menuIconDarkTheme],
+                currentTheme == '2' && [styles.menuIcon, styles.menuIconLightTheme],
+                currentTheme == '3' && [styles.menuIcon, styles.menuIconClassicTheme],
+              )}
+              onClick={handleSideBarClick}
+            />
+          ) : (
+            <MenuIcon
+              className={clsx(
+                currentTheme == '1' && [styles.menuIcon, styles.themeIconDarkTheme],
+                currentTheme == '2' && [styles.menuIcon, styles.menuIconLightTheme],
+                currentTheme == '3' && [styles.menuIcon, styles.themeIconClassicTheme],
+              )}
+              onClick={handleSideBarClick}
+            />
+          )}
+        </div>
 
         <p className={styles.raibowText}>B</p>
-        {/* <SearchIcon
-          className={clsx(
-            currentTheme == '1' && [styles.menuIcon, styles.menuIconDarkTheme],
-            currentTheme == '2' && [styles.menuIcon, styles.menuIconLightTheme],
-            currentTheme == '3' && [styles.menuIcon, styles.menuIconClassicTheme],
-          )}
-        /> */}
+
         <div className={styles.buttonLogOut}>
           {userData ? (
             <Button style={btnStyle} variant="contained" onClick={() => handleLogOut()}>

@@ -7,7 +7,6 @@ import { LoginForm, RegistrationForm } from '../../components';
 import { useAuth } from '../../context';
 import { HttpErrorResponse, LoginFormValues, RegistrationFormValues } from '../../types';
 import { links } from '../../App';
-// import clsx from 'clsx';
 
 import styles from './LoginPage.module.scss';
 
@@ -22,7 +21,6 @@ export const LoginPage = LoginPageRoute(() => {
   const [isLoginForm, setIsLoginForm] = useState<boolean>(true);
   const { login, signUp } = useAuth();
   const history = useHistory();
-  //   const { currentTheme } = useContext(Context);
 
   const handleSignUp = async (values: RegistrationFormValues) => {
     try {
