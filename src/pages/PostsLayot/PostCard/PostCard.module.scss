@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 16px;
-  margin-right: 69px;
+  margin-right: 42px;
 }
 
 .textWrapper {
@@ -78,6 +78,13 @@
   cursor: pointer;
 }
 
+.iconRotate {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+  transform: rotate(180deg);
+}
+
 .bucketIcon {
   margin-top: 24px;
   padding-right: 16px;
@@ -119,10 +126,14 @@
   align-items: baseline;
 }
 
-.moreTextStyle{
+.moreTextStyle {
   margin-left: 4px;
   color: #8e8e8e;
   cursor: n-resize;
+}
+
+.br {
+  white-space: pre-wrap;
 }
 
 // .commentWrapper {
@@ -156,4 +167,10 @@
 .formWrapper {
   margin-left: 16px;
   padding-bottom: 16px;
+}
+
+@media screen and (max-width: 768px) {
+  .cardWrapper {
+    margin-right: 16px;
+  }
 }
