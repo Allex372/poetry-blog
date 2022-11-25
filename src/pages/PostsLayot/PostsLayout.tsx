@@ -1,13 +1,13 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Route } from 'react-router-hoc';
 import { useQuery, useMutation } from 'react-query';
 import { toast } from 'react-toastify';
-import { ConfirmationModal, CustomDialog } from '../../components';
+import { ConfirmationModal, CustomDialog, PhotoPreviewModal } from '../../components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Context from '../../context/Context';
+import { RefetchContext } from '../../context/Refetch';
 import { PostCard } from './PostCard';
-// import logo from './img.jpeg'; // Tell webpack this JS file uses this image
 import { useAuth } from '../../context';
 import { api, apiRoutes } from '../../api';
 import { PostInterface } from '../../types';
@@ -24,9 +24,12 @@ const PostsLayoutRoute = Route(
 export const PostsLayout = PostsLayoutRoute(() => {
   const { userData } = useAuth();
   const { currentTheme } = useContext(Context);
+  const { isRefetch } = useContext(RefetchContext);
 
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [openPhotoDialog, setOpenPhotoDialog] = useState<boolean>(false);
   const [postToDelete, setPostToDelete] = useState<string | null>(null);
+  const [photoToOpen, setPhototoOpen] = useState<string | null>(null);
 
   const getPostsQuery = () => api.get(apiRoutes.posts).then((res) => res.data);
   const { data, refetch, isLoading, isFetching } = useQuery('postsQuery', () => getPostsQuery());
@@ -48,11 +51,24 @@ export const PostsLayout = PostsLayoutRoute(() => {
     setPostToDelete(id);
   };
 
+  const handleOpenPhotoPreview = (src: string) => {
+    setPhototoOpen(src);
+    setOpenPhotoDialog(true);
+  };
+
+  const handleCloseSelectedPhotoDialog = () => {
+    setOpenPhotoDialog(false);
+  };
+
   const handleDelete = () => {
     postToDelete && deletePostMutation(postToDelete);
   };
 
   const handleCloseSelectedDialog = () => setOpenDialog(false);
+
+  useEffect(() => {
+    isRefetch && refetch();
+  }, [isRefetch]);
 
   if (isFetching || isLoading) return <CircularProgress />;
   return (
@@ -70,6 +86,7 @@ export const PostsLayout = PostsLayoutRoute(() => {
             theme={currentTheme}
             userID={userData?._id}
             onDelete={() => handleDeleteProject(el?._id)}
+            onOpen={() => handleOpenPhotoPreview(el?.picture)}
             comments={el?.comments}
             postsRefetch={refetch}
           />
@@ -78,7 +95,6 @@ export const PostsLayout = PostsLayoutRoute(() => {
       <CustomDialog
         open={openDialog}
         header="Are you sure that you want delete this post?"
-        // icon={<PlusIcon />}
         onClose={handleCloseSelectedDialog}
       >
         <ConfirmationModal
@@ -86,6 +102,9 @@ export const PostsLayout = PostsLayoutRoute(() => {
           onSubmit={handleDelete}
           onClose={handleCloseSelectedDialog}
         />
+      </CustomDialog>
+      <CustomDialog open={openPhotoDialog} onClose={handleCloseSelectedPhotoDialog}>
+        <PhotoPreviewModal src={photoToOpen} />
       </CustomDialog>
     </>
   );

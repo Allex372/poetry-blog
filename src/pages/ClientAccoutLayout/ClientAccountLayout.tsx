@@ -1,17 +1,16 @@
-import { useMemo, useContext, useState } from 'react';
+import { useMemo, useContext, useState, useEffect } from 'react';
 import { Route } from 'react-router-hoc';
 import { toast } from 'react-toastify';
 import { useQuery, useMutation } from 'react-query';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { PostCard } from '../PostsLayot/PostCard';
-import { ConfirmationModal, CustomDialog } from '../../components';
+import { ConfirmationModal, CustomDialog, PhotoPreviewModal } from '../../components';
 import Context from '../../context/Context';
+import { RefetchContext } from '../../context/Refetch';
 import { useAuth } from '../../context';
 import { PostInterface } from '../../types';
-// import { links } from '../../App';
 import { api, apiRoutes } from '../../api';
-// import clsx from 'clsx';
 
 import styles from './ClientAccount.module.scss';
 
@@ -31,9 +30,12 @@ export const ClientAccount = ClientAccountRoute(
   }) => {
     const { userData } = useAuth();
     const { currentTheme } = useContext(Context);
+    const { isRefetch } = useContext(RefetchContext);
 
     const [openDialog, setOpenDialog] = useState<boolean>(false);
+    const [openPhotoDialog, setOpenPhotoDialog] = useState<boolean>(false);
     const [postToDelete, setPostToDelete] = useState<string | null>(null);
+    const [photoToOpen, setPhototoOpen] = useState<string | null>(null);
 
     const getPostsQuery = () => api.get(`${apiRoutes.posts}/${id}`).then((res) => res.data);
     const { data, refetch, isFetching, isLoading } = useQuery('postsQuery', () => getPostsQuery());
@@ -55,11 +57,24 @@ export const ClientAccount = ClientAccountRoute(
       setPostToDelete(id);
     };
 
+    const handleOpenPhotoPreview = (src: string) => {
+      setPhototoOpen(src);
+      setOpenPhotoDialog(true);
+    };
+
+    const handleCloseSelectedPhotoDialog = () => {
+      setOpenPhotoDialog(false);
+    };
+
     const handleDelete = () => {
       postToDelete && deletePostMutation(postToDelete);
     };
 
     const handleCloseSelectedDialog = () => setOpenDialog(false);
+
+    useEffect(() => {
+      isRefetch && refetch();
+    }, [isRefetch]);
 
     if (isFetching || isLoading) return <CircularProgress />;
 
@@ -78,6 +93,7 @@ export const ClientAccount = ClientAccountRoute(
               theme={currentTheme}
               userID={userData?._id}
               onDelete={() => handleDeleteProject(el?._id)}
+              onOpen={() => handleOpenPhotoPreview(el?.picture)}
               comments={el?.comments}
               postsRefetch={refetch}
               canDeleteComment={true}
@@ -95,6 +111,9 @@ export const ClientAccount = ClientAccountRoute(
             onSubmit={handleDelete}
             onClose={handleCloseSelectedDialog}
           />
+        </CustomDialog>
+        <CustomDialog open={openPhotoDialog} onClose={handleCloseSelectedPhotoDialog}>
+          <PhotoPreviewModal src={photoToOpen} />
         </CustomDialog>
       </>
     );
