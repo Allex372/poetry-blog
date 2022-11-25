@@ -113,6 +113,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                     <Field
                       component={TextField}
                       className={styles.inputWidth}
+                      disabled
                       name="role"
                       label="User role"
                       variant="outlined"
@@ -122,6 +123,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                     <Field
                       component={TextField}
                       className={styles.inputWidth}
+                      disabled
                       name="createdAt"
                       label="Account created at"
                       variant="outlined"
@@ -131,6 +133,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                     <Field
                       component={TextField}
                       className={styles.inputWidth}
+                      disabled
                       name="updatedAt"
                       label="Account updated at"
                       variant="outlined"

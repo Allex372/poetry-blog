@@ -12,9 +12,10 @@
   flex-direction: column;
   justify-content: center;
   background-color: aliceblue;
-  padding: 16px;
+  padding: 32px;
   align-items: center;
-  margin-right: 69px;
+  margin-right: 42px;
+  margin: 16px 0 16px 0;
 }
 
 .pointsWrapper {
@@ -58,4 +59,10 @@
 
 .inputStyle {
   margin-top: 24px;
+}
+
+@media screen and (max-width: 768px) {
+  .settingsWrapper {
+    margin-right: 16px;
+  }
 }
