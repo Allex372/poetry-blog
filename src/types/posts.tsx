@@ -9,6 +9,7 @@ export interface PostInterface {
   __v: number;
   _id: string;
   userName: string;
+  photoPublicId: string;
   comments?: Comment[];
 }
 

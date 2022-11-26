@@ -94,6 +94,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
         picture: uploadImg.secure_url,
         userID: userData?._id,
         userName: userData?.name,
+        photoPublicId: uploadImg?.public_id,
       };
       await axios
         .request({
