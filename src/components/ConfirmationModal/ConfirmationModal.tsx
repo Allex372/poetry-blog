@@ -30,10 +30,10 @@ export const ConfirmationModal: FC<ConfirmationModalProps> = ({
 
     <div className={styles.btnWrapper}>
       <Button style={btnStyle} variant="contained" onClick={onClose}>
-        {cancelText ?? 'Cancel'}
+        {cancelText ?? 'Скасувати'}
       </Button>
       <LoadingButton variant="text" onClick={onSubmit} loading={isLoading}>
-        {submitText ?? 'Yes, delete'}
+        {submitText ?? 'Видалити'}
       </LoadingButton>
     </div>
   </div>

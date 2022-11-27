@@ -88,21 +88,21 @@ export const SettingsPage = SettingsLayoutRoute(() => {
           {({ isSubmitting }) => (
             <Form>
               <div className={styles.topContainer}>
-                <h1 className={styles.blockTitle}>Edit Profile</h1>
+                <h1 className={styles.blockTitle}>Керування профілем</h1>
               </div>
               <section className={styles.sectionWrapper}>
-                <span className={styles.heading}>- Personal Info</span>
+                <span className={styles.heading}>- Інформація користувача</span>
                 <div className={styles.inputWrapper}>
                   <div className={styles.inputStyle}>
                     <Field
                       component={TextField}
                       className={styles.inputWidth}
                       name="name"
-                      label="User name"
+                      label="Нік нейм"
                       variant="outlined"
                     />
                   </div>
-                  <div className={styles.inputStyle}>
+                  {/* <div className={styles.inputStyle}>
                     <Field
                       component={TextField}
                       className={styles.inputWidth}
@@ -111,14 +111,14 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                       label="User role"
                       variant="outlined"
                     />
-                  </div>
+                  </div> */}
                   <div className={styles.inputStyle}>
                     <Field
                       component={TextField}
                       className={styles.inputWidth}
                       disabled
                       name="createdAt"
-                      label="Account created at"
+                      label="Створений"
                       variant="outlined"
                     />
                   </div>
@@ -128,7 +128,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                       className={styles.inputWidth}
                       disabled
                       name="updatedAt"
-                      label="Account updated at"
+                      label="Оновлений"
                       variant="outlined"
                     />
                   </div>
@@ -146,7 +146,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                 </div>
               </section>
               <section className={styles.sectionWrapper}>
-                <span className={styles.heading}>- Change password</span>
+                <span className={styles.heading}>- Зміна паролю</span>
                 <div className={styles.inputWrapper}>
                   <div className={styles.inputStyle}>
                     <Field
@@ -155,7 +155,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                       name="password"
                       variant="outlined"
                       className={styles.inputW}
-                      label="Password"
+                      label="Пароль"
                       InputProps={{
                         endAdornment: (
                           <Tooltip
@@ -181,7 +181,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                       name="passwordConfirmation"
                       variant="outlined"
                       className={styles.inputW}
-                      label="Confirm Password"
+                      label="Підтвердити"
                       InputProps={{
                         endAdornment: (
                           <Tooltip
@@ -205,7 +205,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
 
               <div className={styles.inputStyle}>
                 <LoadingButton fullWidth type="submit" loading={isSubmitting}>
-                  Save
+                  Оновити
                 </LoadingButton>
               </div>
             </Form>
