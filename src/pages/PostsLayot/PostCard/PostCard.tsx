@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { toast } from 'react-toastify';
@@ -12,6 +13,7 @@ import clsx from 'clsx';
 import { ThumbsUp, DeleteIcon } from '../../../icons';
 import { Comment } from '../../../types';
 import { useAuth } from '../../../context';
+import { links } from '../../../App';
 
 import styles from './PostCard.module.scss';
 
@@ -31,6 +33,7 @@ type PostCardProps = {
   comments?: Comment[];
   postsRefetch?: () => void;
   canDeleteComment?: boolean;
+  postCreatorId?: string;
 };
 
 export const PostCard = ({
@@ -46,6 +49,7 @@ export const PostCard = ({
   comments,
   postsRefetch,
   canDeleteComment,
+  postCreatorId,
   onOpen,
 }: PostCardProps) => {
   const { userData } = useAuth();
@@ -125,7 +129,14 @@ export const PostCard = ({
             <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>
               Created by:&nbsp;
             </p>
-            <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{userName}</p>
+            {postCreatorId && (
+              <NavLink
+                to={links.ClientAccount({ id: postCreatorId })}
+                className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}
+              >
+                {userName}
+              </NavLink>
+            )}
           </div>
           {userID === creator && (
             <div>

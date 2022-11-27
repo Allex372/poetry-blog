@@ -85,6 +85,7 @@ export const PostsLayout = PostsLayoutRoute(() => {
             text={el?.text}
             theme={currentTheme}
             userID={userData?._id}
+            postCreatorId={el?.userID}
             onDelete={() => handleDeleteProject(el?._id)}
             onOpen={() => handleOpenPhotoPreview(el?.picture)}
             comments={el?.comments}
