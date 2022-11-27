@@ -42,13 +42,13 @@ export const LoginPage = LoginPageRoute(() => {
   return (
     <div className={styles.formWrapper}>
       <div className={styles.topWrapper}>
-        <p>Login or Sign In?</p>
+        <p>Ввійти чи Зареєстуватися?</p>
         <div className={styles.textWrapper}>
           <p className={styles.title} onClick={() => setIsLoginForm(true)}>
-            Login
+            Вхід
           </p>
           <p className={styles.title} onClick={() => setIsLoginForm(false)}>
-            Sing In
+            Реєстрація
           </p>
         </div>
       </div>

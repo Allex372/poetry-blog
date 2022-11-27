@@ -13,9 +13,19 @@ interface ModalState {
   fullHeight?: boolean;
   className?: string;
   children: React.ReactNode;
+  helperText?: string;
 }
 
-export const CustomDialog: FC<ModalState> = ({ children, open, onClose, header, icon, fullHeight, className }) => {
+export const CustomDialog: FC<ModalState> = ({
+  children,
+  open,
+  helperText,
+  onClose,
+  header,
+  icon,
+  fullHeight,
+  className,
+}) => {
   return (
     <div>
       <Dialog className={className} fullScreen={fullHeight} open={open} onClose={onClose}>
@@ -26,6 +36,7 @@ export const CustomDialog: FC<ModalState> = ({ children, open, onClose, header, 
             <CloseIcon onClick={onClose} className={styles.closeBtn} />
           </h2>
         )}
+        {helperText && <h6 className={styles.helperText}>{helperText}</h6>}
         {children}
       </Dialog>
     </div>
