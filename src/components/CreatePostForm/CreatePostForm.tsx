@@ -1,7 +1,9 @@
+import React from 'react';
 import { Formik, Form, Field, useField, FieldHookConfig } from 'formik';
 import { TextField } from 'formik-material-ui';
 import Button from '@material-ui/core/Button';
 import { LoadingButton } from '../LoadingButton';
+import * as Yup from 'yup';
 
 import { ImageIcon } from '../../icons';
 
@@ -22,6 +24,14 @@ type RoleFormProps = {
 const btnStyle = { color: 'black', fontWeight: 'bold' };
 
 export const CreatePostForm = ({ submitButtonTitle, onSubmit, close }: RoleFormProps) => {
+  const validationSchema = React.useMemo(
+    () =>
+      Yup.object().shape({
+        title: Yup.string().required('Поле обов`язкове'),
+        text: Yup.string().required('Поле обов`язкове'),
+      }),
+    [],
+  );
   const MyTextArea = (props: FieldHookConfig<string>) => {
     // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
     // which we can spread on <input> and alse replace ErrorMessage entirely.
@@ -30,20 +40,20 @@ export const CreatePostForm = ({ submitButtonTitle, onSubmit, close }: RoleFormP
       <>
         {/* <label htmlFor={name}>{label}</label> */}
         <textarea className={styles.textArea} {...field} />
-        {meta.touched && meta.error ? <div className="error">{meta.error}</div> : null}
+        {meta.touched && meta.error ? <div className={styles.error}>{meta.error}</div> : null}
       </>
     );
   };
   return (
-    <Formik initialValues={{ title: '', text: '' }} onSubmit={onSubmit}>
+    <Formik validationSchema={validationSchema} initialValues={{ title: '', text: '' }} onSubmit={onSubmit}>
       {({ isSubmitting, setFieldValue, values }) => (
         <Form className={styles.formWrapper}>
           <div className={styles.inputWrapper}>
-            <Field component={TextField} name="title" label="Title" type="text" />
+            <Field component={TextField} name="title" label="Заголовок" type="text" />
           </div>
           <div className={styles.inputWrapper}>
             <label htmlFor="inputTag" className={styles.inputWrapper}>
-              {values?.file ? values?.file.name : 'Select Image'}
+              {values?.file ? values?.file.name : 'Обрати фото'}
               <ImageIcon className={styles.downloadIcon} />
               <input
                 id="inputTag"
@@ -67,7 +77,7 @@ export const CreatePostForm = ({ submitButtonTitle, onSubmit, close }: RoleFormP
               {submitButtonTitle}
             </LoadingButton>
             <Button style={btnStyle} type="reset" variant="text" onClick={() => close()}>
-              Cancel
+              Скасувати
             </Button>
           </div>
         </Form>

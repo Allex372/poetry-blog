@@ -127,15 +127,19 @@ export const PostCard = ({
         <div className={styles.headerWrapper}>
           <div className={styles.textWrapper}>
             <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>
-              Created by:&nbsp;
+              Користувач:&nbsp;
             </p>
-            {postCreatorId && (
+            {postCreatorId ? (
               <NavLink
                 to={links.ClientAccount({ id: postCreatorId })}
                 className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}
               >
                 {userName}
               </NavLink>
+            ) : (
+              <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>
+                {userName}
+              </p>
             )}
           </div>
           {userID === creator && (
@@ -157,7 +161,7 @@ export const PostCard = ({
           )}
           {text.length > 20 && (
             <span className={styles.moreTextStyle} onClick={() => setShowMore(!showMore)}>
-              {showMore ? 'Show less' : 'Show more'}
+              {showMore ? 'Більше' : 'Менше'}
             </span>
           )}
         </div>
@@ -165,7 +169,7 @@ export const PostCard = ({
         {comments && Object.keys(comments[0]).length !== 0 ? (
           <div className={styles.info}>
             <div onClick={() => handleOpenComments(postID)}>
-              <p className={styles.comments}>{postCommentsId ? 'Hide comments' : 'Check comments'}</p>
+              <p className={styles.comments}>{postCommentsId ? 'Приховати коментарі' : 'Переглянути коментарі'}</p>
             </div>
             <div className={styles.likes}>
               <ThumbsUp className={clsx(theme && theme === 1 ? [styles.icon, styles.iconLight] : styles.icon)} />
@@ -173,7 +177,7 @@ export const PostCard = ({
           </div>
         ) : (
           <div className={styles.info}>
-            <p className={styles.comments}>No comments here</p>
+            <p className={styles.comments}>Немає коментарів</p>
             <div className={styles.likes}>
               <ThumbsUp className={clsx(theme && theme === 1 ? [styles.icon, styles.iconLight] : styles.iconRotate)} />
             </div>
@@ -185,7 +189,7 @@ export const PostCard = ({
               <div className={styles.comments}>
                 <div className={styles.userDataWrapper}>
                   <div className={styles.commentWrapper}>
-                    <p className={styles.userData}>{comment?.user?.name ? comment?.user?.name : 'Unknown User'}:</p>
+                    <p className={styles.userData}>{comment?.user?.name ? comment?.user?.name : 'Ноунейм'}:</p>
                     <p className={styles.commentStyle}>{comment.text}</p>
                   </div>
                   {canDeleteComment && (
@@ -212,7 +216,7 @@ export const PostCard = ({
                   <Field
                     component={TextField}
                     name="comment"
-                    label="Write comment"
+                    label="Коментувати"
                     type="text"
                     InputProps={{ disableUnderline: true }}
                   />
@@ -223,12 +227,12 @@ export const PostCard = ({
         )}
         <CustomDialog
           open={openDialog}
-          header="Are you sure that you want delete this comment?"
+          header="Ви впевнені, що хочете видалити цей коментар?"
           // icon={<PlusIcon />}
           onClose={handleCloseSelectedDialog}
         >
           <ConfirmationModal
-            text="You won`t be able to restore it"
+            text="Ви не зможете відновити дану дію"
             onSubmit={handleDelete}
             onClose={handleCloseSelectedDialog}
           />

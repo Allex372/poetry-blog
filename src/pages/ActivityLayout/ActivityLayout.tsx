@@ -104,7 +104,7 @@ export const ActivityLayout = ActivityLayoutRoute(
               currentTheme == '3' && styles.tooltipTextLightTheme,
             )}
           >
-            Posts statistic by mounth
+            Статистика постів за місяць
           </h2>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart
@@ -121,7 +121,7 @@ export const ActivityLayout = ActivityLayoutRoute(
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="_id" />
               <YAxis />
-              <Tooltip content={<CustomTooltip name="count" />} />
+              <Tooltip content={<CustomTooltip name="Кількість" />} />
               <Bar dataKey="count" fill="#77c9e6" />
             </BarChart>
           </ResponsiveContainer>

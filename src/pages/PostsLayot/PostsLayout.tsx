@@ -95,11 +95,11 @@ export const PostsLayout = PostsLayoutRoute(() => {
       </div>
       <CustomDialog
         open={openDialog}
-        header="Are you sure that you want delete this post?"
+        header="Ви впевнені, що хочете видалити даний пост?"
         onClose={handleCloseSelectedDialog}
       >
         <ConfirmationModal
-          text="You won`t be able to restore it"
+          text="Цю дію не можливо відновити"
           onSubmit={handleDelete}
           onClose={handleCloseSelectedDialog}
         />
