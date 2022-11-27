@@ -33,6 +33,7 @@ type PostCardProps = {
   comments?: Comment[];
   postsRefetch?: () => void;
   canDeleteComment?: boolean;
+  postCreatorId?: string;
 };
 
 export const PostCard = ({
@@ -48,6 +49,7 @@ export const PostCard = ({
   comments,
   postsRefetch,
   canDeleteComment,
+  postCreatorId,
   onOpen,
 }: PostCardProps) => {
   const { userData } = useAuth();
@@ -127,12 +129,14 @@ export const PostCard = ({
             <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>
               Created by:&nbsp;
             </p>
-            <NavLink
-              to={links.ClientAccount({ id: userID })}
-              className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}
-            >
-              {userName}
-            </NavLink>
+            {postCreatorId && (
+              <NavLink
+                to={links.ClientAccount({ id: postCreatorId })}
+                className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}
+              >
+                {userName}
+              </NavLink>
+            )}
           </div>
           {userID === creator && (
             <div>
