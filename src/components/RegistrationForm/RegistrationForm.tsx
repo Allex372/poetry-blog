@@ -48,8 +48,8 @@ export const RegistrationForm: FC<RegistrationProps> = (props) => {
       {({ isSubmitting }) => (
         <div className={styles.formWrapper}>
           <div>
-            <p className={styles.titleFontSize}>Welcome</p>
-            <p className={styles.textStyle}>Registration</p>
+            <p className={styles.titleFontSize}>Привіт</p>
+            <p className={styles.textStyle}>Реєстрація</p>
             <Form className={styles.inputWrapper}>
               <div className={styles.inputStyle}>
                 <Field
@@ -67,7 +67,7 @@ export const RegistrationForm: FC<RegistrationProps> = (props) => {
                   component={TextField}
                   className={styles.inputW}
                   name="name"
-                  label="User name"
+                  label="Ім`я користувача"
                   variant="outlined"
                   type="text"
                 />
@@ -80,7 +80,7 @@ export const RegistrationForm: FC<RegistrationProps> = (props) => {
                   name="password"
                   variant="outlined"
                   className={styles.inputW}
-                  label="Password"
+                  label="Пароль"
                   InputProps={{
                     endAdornment: (
                       <Tooltip
@@ -102,7 +102,7 @@ export const RegistrationForm: FC<RegistrationProps> = (props) => {
 
               <div className="flex align-items-center justify-content-center">
                 <LoadingButton type="submit" className={styles.btnStyle} loading={isSubmitting}>
-                  Register
+                  Реєстрація
                 </LoadingButton>
               </div>
             </Form>

@@ -44,8 +44,8 @@ export const LoginForm: FC<LoginProps> = (props) => {
       {({ isSubmitting }) => (
         <div className={styles.formWrapper}>
           <div>
-            <p className={styles.titleFontSize}>Welcome back</p>
-            <p className={styles.textStyle}>Login</p>
+            <p className={styles.titleFontSize}>Ласкаво просимо</p>
+            <p className={styles.textStyle}>Вхід</p>
             <Form className={styles.inputWrapper}>
               <div className={styles.inputStyle}>
                 <Field
@@ -65,7 +65,7 @@ export const LoginForm: FC<LoginProps> = (props) => {
                   name="password"
                   variant="outlined"
                   className={styles.inputW}
-                  label="Password"
+                  label="Пароль"
                   InputProps={{
                     endAdornment: (
                       <Tooltip
@@ -96,7 +96,7 @@ export const LoginForm: FC<LoginProps> = (props) => {
                 </div> */}
               <div className="flex align-items-center justify-content-center">
                 <LoadingButton type="submit" className={styles.btnStyle} loading={isSubmitting}>
-                  Login
+                  Вхід
                 </LoadingButton>
               </div>
             </Form>

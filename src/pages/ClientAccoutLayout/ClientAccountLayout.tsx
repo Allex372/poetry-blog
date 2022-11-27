@@ -3,6 +3,7 @@ import { Route } from 'react-router-hoc';
 import { toast } from 'react-toastify';
 import { useQuery, useMutation } from 'react-query';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Button from '@material-ui/core/Button';
 
 import { PostCard } from '../PostsLayot/PostCard';
 import { ConfirmationModal, CustomDialog, PhotoPreviewModal } from '../../components';
@@ -11,6 +12,7 @@ import { RefetchContext } from '../../context/Refetch';
 import { useAuth } from '../../context';
 import { PostInterface } from '../../types';
 import { api, apiRoutes } from '../../api';
+import img from './img.jpeg';
 
 import styles from './ClientAccount.module.scss';
 
@@ -21,6 +23,8 @@ const ClientAccountRoute = Route(
   },
   ({ id }) => `/account/${id}`,
 );
+
+const btnStyle = { backgroundColor: '#00b8ff', color: 'white', fontWeight: 'bold', marginTop: '16px' };
 
 export const ClientAccount = ClientAccountRoute(
   ({
@@ -39,6 +43,14 @@ export const ClientAccount = ClientAccountRoute(
 
     const getPostsQuery = () => api.get(`${apiRoutes.posts}/${id}`).then((res) => res.data);
     const { data, refetch, isFetching, isLoading } = useQuery('postsQuery', () => getPostsQuery());
+
+    const getUserQuery = () => api.get(`${apiRoutes.users}/${id}`).then((res) => res.data);
+    const {
+      data: currentUser,
+      // refetch: userRefetch,
+      isFetching: userIsFetching,
+      isLoading: userIsLoading,
+    } = useQuery('getUserQuery', () => getUserQuery());
 
     const filteredPosts = useMemo(() => (data ? data : []), [data]);
 
@@ -70,16 +82,29 @@ export const ClientAccount = ClientAccountRoute(
       postToDelete && deletePostMutation(postToDelete);
     };
 
+    const handleFollowUser = () => {
+      console.log('1');
+    };
+
     const handleCloseSelectedDialog = () => setOpenDialog(false);
 
     useEffect(() => {
       isRefetch && refetch();
     }, [isRefetch]);
 
-    if (isFetching || isLoading) return <CircularProgress />;
+    if (isFetching || isLoading || userIsLoading || userIsFetching) return <CircularProgress />;
 
     return (
-      <>
+      <div className={styles.mainWrapper}>
+        <div className={styles.header}>
+          <img src={img} className={styles.avatar} />
+          <div className={styles.userName}>{currentUser?.name}</div>
+          {userData?._id !== id && (
+            <Button style={btnStyle} variant="contained" onClick={() => handleFollowUser()}>
+              Зафоловити
+            </Button>
+          )}
+        </div>
         <div className={styles.formWrapper}>
           {filteredPosts?.data?.map((el: PostInterface) => (
             <PostCard
@@ -102,12 +127,12 @@ export const ClientAccount = ClientAccountRoute(
         </div>
         <CustomDialog
           open={openDialog}
-          header="Are you sure that you want delete this post?"
+          header="Ви впевнені, що хочете видалити даний пост?"
           // icon={<PlusIcon />}
           onClose={handleCloseSelectedDialog}
         >
           <ConfirmationModal
-            text="You won`t be able to restore it"
+            text="Цю дію не можливо відновити"
             onSubmit={handleDelete}
             onClose={handleCloseSelectedDialog}
           />
@@ -115,7 +140,7 @@ export const ClientAccount = ClientAccountRoute(
         <CustomDialog open={openPhotoDialog} onClose={handleCloseSelectedPhotoDialog}>
           <PhotoPreviewModal src={photoToOpen} />
         </CustomDialog>
-      </>
+      </div>
     );
   },
 );

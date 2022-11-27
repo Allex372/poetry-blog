@@ -27,9 +27,9 @@ import styles from './Header.module.scss';
 import axios from 'axios';
 
 const Themes = [
-  { id: 1, name: 'Dark' },
-  { id: 2, name: 'Light' },
-  { id: 3, name: 'Classic' },
+  { id: 1, name: 'Темна' },
+  { id: 2, name: 'Світла' },
+  { id: 3, name: 'Оригінальна' },
 ];
 
 interface ThemeInterface {
@@ -82,34 +82,36 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
     formData.append('file', value.file);
     formData.append('upload_preset', 'vm30xf2h');
 
-    const uploadImg = await fetch('https://api.cloudinary.com/v1_1/dp0ftqcbc/image/upload', {
-      method: 'POST',
-      body: formData,
-    }).then((req) => req.json());
+    if (value.title && value.text) {
+      const uploadImg = await fetch('https://api.cloudinary.com/v1_1/dp0ftqcbc/image/upload', {
+        method: 'POST',
+        body: formData,
+      }).then((req) => req.json());
 
-    if (uploadImg.secure_url) {
-      const newPost = {
-        title: value.title,
-        text: value.text,
-        picture: uploadImg.secure_url,
-        userID: userData?._id,
-        userName: userData?.name,
-        photoPublicId: uploadImg?.public_id,
-      };
-      await axios
-        .request({
-          method: 'post',
-          url: 'https://poetry-blog-nodejs.herokuapp.com/posts',
-          data: newPost,
-        })
-        .then((res) => {
-          if (res.status == 200) {
-            setOpenCreatePostDialog(false);
-            toast.success('Post Created');
-            setOpenSideBar(false);
-            handleNeedRefetch(true);
-          }
-        });
+      if (uploadImg.secure_url) {
+        const newPost = {
+          title: value.title,
+          text: value.text,
+          picture: uploadImg.secure_url,
+          userID: userData?._id,
+          userName: userData?.name,
+          photoPublicId: uploadImg?.public_id,
+        };
+        await axios
+          .request({
+            method: 'post',
+            url: 'https://poetry-blog-nodejs.herokuapp.com/posts',
+            data: newPost,
+          })
+          .then((res) => {
+            if (res.status == 200) {
+              setOpenCreatePostDialog(false);
+              toast.success('Post Created');
+              setOpenSideBar(false);
+              handleNeedRefetch(true);
+            }
+          });
+      }
     }
   };
 
@@ -164,11 +166,11 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
         <div className={styles.buttonLogOut}>
           {userData ? (
             <Button style={btnStyle} variant="contained" onClick={() => handleLogOut()}>
-              Out
+              Вихід
             </Button>
           ) : (
             <NavLink style={btnStyle} to={links.LoginPage()}>
-              Log In
+              Вхід
             </NavLink>
           )}
         </div>
@@ -191,7 +193,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
                     onClick={() => setOpenCreatePostDialog(true)}
                     variant="contained"
                   >
-                    Create Post
+                    Створити пост
                   </Button>
                 </div>
               </div>
@@ -212,7 +214,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
                     currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
                   )}
                 >
-                  Home
+                  Стрічка
                 </p>
               </div>
             </SidebarNavItem>
@@ -233,7 +235,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
                     currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
                   )}
                 >
-                  Settings
+                  Налаштування
                 </p>
               </div>
             </SidebarNavItem>
@@ -255,7 +257,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
                       currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
                     )}
                   >
-                    Activity
+                    Активність
                   </p>
                 </div>
               </SidebarNavItem>
@@ -278,7 +280,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
                       currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
                     )}
                   >
-                    My Posts
+                    Мої пости
                   </p>
                 </div>
               </SidebarNavItem>
@@ -302,7 +304,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
                   )}
                   onClick={() => setIsThemeOpen(!isThemeOpen)}
                 >
-                  Themes
+                  Тема
                 </p>
                 {isThemeOpen && (
                   <div
@@ -333,12 +335,13 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
           </div>
           <CustomDialog
             open={openCreatePostDialog}
-            header="Create your post"
+            header="Створи свій пост"
             // icon={<PlusIcon />}
+            helperText="Всі поля обов`зкові!"
             onClose={handleCloseSelectedDialog}
           >
             <CreatePostForm
-              submitButtonTitle="Create Post"
+              submitButtonTitle="Створити"
               onSubmit={handleCreatePost}
               close={handleCloseSelectedDialog}
             />
