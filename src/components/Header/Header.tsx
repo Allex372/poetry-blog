@@ -161,7 +161,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
           )}
         </div>
 
-        <p className={styles.raibowText}>B</p>
+        <p className={styles.raibowText}>FS</p>
 
         <div className={styles.buttonLogOut}>
           {userData ? (
