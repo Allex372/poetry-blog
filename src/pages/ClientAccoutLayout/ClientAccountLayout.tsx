@@ -42,15 +42,16 @@ export const ClientAccount = ClientAccountRoute(
     const [photoToOpen, setPhototoOpen] = useState<string | null>(null);
 
     const getPostsQuery = () => api.get(`${apiRoutes.posts}/${id}`).then((res) => res.data);
-    const { data, refetch, isFetching, isLoading } = useQuery('postsQuery', () => getPostsQuery());
+    const { data, refetch, isFetching, isLoading } = useQuery([id, 'postsQuery'], () => getPostsQuery());
 
     const getUserQuery = () => api.get(`${apiRoutes.users}/${id}`).then((res) => res.data);
     const {
       data: currentUser,
-      // refetch: userRefetch,
       isFetching: userIsFetching,
       isLoading: userIsLoading,
-    } = useQuery('getUserQuery', () => getUserQuery());
+    } = useQuery('getUserQuery', () => getUserQuery(), {
+      enabled: userData?._id !== id,
+    });
 
     const filteredPosts = useMemo(() => (data ? data : []), [data]);
 

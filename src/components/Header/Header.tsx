@@ -264,7 +264,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
             )}
 
             {userData && (
-              <SidebarNavItem className={styles.linkStyle} route={links.ClientAccount({ id: userData?._id })}>
+              <SidebarNavItem className={styles.linkStyle} route={links.ClientAccount({ id: userData._id })}>
                 <div className={styles.iconWrapper}>
                   <UserIcon
                     className={clsx(
