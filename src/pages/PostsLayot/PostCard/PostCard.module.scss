@@ -47,10 +47,16 @@
   margin-left: 16px;
 }
 
+.titleBottom {
+  padding-top: 24px;
+  text-align: center;
+  font-weight: 700;
+}
+
 .text {
   // height: 50px;
   overflow-y: auto;
-  padding: 24px 16px 16px 16px;
+  padding: 4px 16px 16px 16px;
 }
 
 .titleLight {
