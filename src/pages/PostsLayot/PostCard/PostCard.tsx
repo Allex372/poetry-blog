@@ -152,7 +152,9 @@ export const PostCard = ({
           )}
         </div>
         <img className={styles.img} onClick={onOpen} src={src} />
-        <div className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>{title}</div>
+        <div className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.titleBottom)}>
+          {title}
+        </div>
         <div className={clsx(theme && theme === 1 ? [styles.text, styles.titleLight] : styles.text)}>
           {showMore ? (
             <span className={styles.br}>{text}</span>
