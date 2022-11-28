@@ -12,7 +12,7 @@ import { RefetchContext } from '../../context/Refetch';
 import { useAuth } from '../../context';
 import { PostInterface } from '../../types';
 import { api, apiRoutes } from '../../api';
-import img from './img.jpeg';
+// import img from './img.jpeg';
 
 import styles from './ClientAccount.module.scss';
 
@@ -98,8 +98,17 @@ export const ClientAccount = ClientAccountRoute(
     return (
       <div className={styles.mainWrapper}>
         <div className={styles.header}>
-          <img src={img} className={styles.avatar} />
-          <div className={styles.userName}>{currentUser?.name}</div>
+          {userData?._id == id && userData?.avatar && <img src={userData?.avatar} className={styles.avatar} />}
+          {userData?._id == id && !userData?.avatar && <p>Оберіть фото у налаштуваннях</p>}
+
+          {userData?._id !== id && currentUser?.avatar && <img src={currentUser?.avatar} className={styles.avatar} />}
+
+          {userData?._id !== id ? (
+            <div className={styles.userName}>{currentUser?.name}</div>
+          ) : (
+            <div className={styles.userName}>{userData?.name}</div>
+          )}
+
           {userData?._id !== id && (
             <Button style={btnStyle} variant="contained" onClick={() => handleFollowUser()}>
               Зафоловити
@@ -117,6 +126,7 @@ export const ClientAccount = ClientAccountRoute(
               userName={el?.userName}
               text={el?.text}
               theme={currentTheme}
+              userAvatar={el?.user?.avatar}
               userID={userData?._id}
               onDelete={() => handleDeleteProject(el?._id)}
               onOpen={() => handleOpenPhotoPreview(el?.picture)}
