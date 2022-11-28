@@ -9,6 +9,7 @@ import { TextField } from 'formik-material-ui';
 import { LoadingButton, PassVisibilityBtn } from '../../components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as Yup from 'yup';
+import { ImageIcon } from '../../icons';
 
 import { useAuth } from '../../context';
 import { api, apiRoutes } from '../../api';
@@ -58,6 +59,19 @@ export const SettingsPage = SettingsLayoutRoute(() => {
   );
 
   const handleSubmit = async (values: UpdateUserInterface) => {
+    if (values.file) {
+      const formData = new FormData();
+      formData.append('file', values?.file);
+      formData.append('upload_preset', 'zt2xg5aq');
+      const uploadImg = await fetch('https://api.cloudinary.com/v1_1/dp0ftqcbc/image/upload', {
+        method: 'POST',
+        body: formData,
+      }).then((req) => req.json());
+      values.avatar = uploadImg.url;
+      values.avatarPublicId = uploadImg.public_id;
+      values.oldAvatar = userData?.avatarPublicId;
+    }
+
     if (!values.password?.length) {
       delete values.password;
       delete values.updatedAt;
@@ -85,7 +99,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
           }}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, setFieldValue, values }) => (
             <Form>
               <div className={styles.topContainer}>
                 <h1 className={styles.blockTitle}>Керування профілем</h1>
@@ -142,6 +156,22 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                       variant="outlined"
                       type="email"
                     />
+                  </div>
+                  <div className={styles.inputUploadWrapper}>
+                    <label htmlFor="inputTag" className={styles.inputUploadWrapper}>
+                      {values?.file ? values?.file.name : 'Обрати фото'}
+                      <ImageIcon className={styles.downloadIcon} />
+                      <input
+                        id="inputTag"
+                        name="img"
+                        type="file"
+                        onChange={(event: React.ChangeEvent) => {
+                          const target = event.target as HTMLInputElement;
+                          const files = target.files;
+                          files && setFieldValue('file', files[0]);
+                        }}
+                      />
+                    </label>
                   </div>
                 </div>
               </section>

@@ -10,7 +10,9 @@
 }
 
 .textWrapper {
+  align-items: center;
   display: flex;
+  padding-top: 16px;
 }
 
 .headerWrapper {
@@ -33,15 +35,16 @@
 }
 
 .img {
-  padding-top: 32px;
+  padding-top: 16px;
   height: 400px;
   width: 100%;
 }
 
 .title {
-  padding-top: 24px;
+  // padding-top: 24px;
   text-align: center;
   font-weight: 700;
+  margin-left: 16px;
 }
 
 .text {
@@ -166,6 +169,13 @@
 .formWrapper {
   margin-left: 16px;
   padding-bottom: 16px;
+}
+
+.avatar {
+  height: 34px;
+  width: 34px;
+  border-radius: 50%;
+  // margin-top: 24px;
 }
 
 @media screen and (max-width: 768px) {

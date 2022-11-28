@@ -34,6 +34,7 @@ type PostCardProps = {
   postsRefetch?: () => void;
   canDeleteComment?: boolean;
   postCreatorId?: string;
+  userAvatar?: string;
 };
 
 export const PostCard = ({
@@ -50,6 +51,7 @@ export const PostCard = ({
   postsRefetch,
   canDeleteComment,
   postCreatorId,
+  userAvatar,
   onOpen,
 }: PostCardProps) => {
   const { userData } = useAuth();
@@ -126,9 +128,7 @@ export const PostCard = ({
       >
         <div className={styles.headerWrapper}>
           <div className={styles.textWrapper}>
-            <p className={clsx(theme && theme === 1 ? [styles.title, styles.titleLight] : styles.title)}>
-              Користувач:&nbsp;
-            </p>
+            {userAvatar && <img className={styles.avatar} src={userAvatar} />}
             {postCreatorId ? (
               <NavLink
                 to={links.ClientAccount({ id: postCreatorId })}

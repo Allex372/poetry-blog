@@ -11,6 +11,7 @@ export interface PostInterface {
   userName: string;
   photoPublicId: string;
   comments?: Comment[];
+  user?: User;
 }
 
 export interface Comment {
@@ -35,6 +36,7 @@ export interface User {
   userID: string;
   __v: number;
   _id: string;
+  avatar?: string;
 }
 
 export interface UpdateUserInterface {
@@ -44,4 +46,8 @@ export interface UpdateUserInterface {
   _id?: string;
   updatedAt?: string;
   createdAt: string;
+  file?: File;
+  avatar?: string;
+  avatarPublicId?: string | number;
+  oldAvatar?: string;
 }

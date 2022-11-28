@@ -32,6 +32,9 @@ interface UserDataInterface {
   updatedAt: string;
   _id: string;
   name: string;
+  avatar?: string;
+  oldAvatar?: string;
+  avatarPublicId?: string;
 }
 
 interface AuthContextInterface {
