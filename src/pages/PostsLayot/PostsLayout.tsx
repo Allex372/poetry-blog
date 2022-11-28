@@ -83,6 +83,7 @@ export const PostsLayout = PostsLayoutRoute(() => {
             title={el?.title}
             userName={el?.userName}
             text={el?.text}
+            userAvatar={el?.user?.avatar}
             theme={currentTheme}
             userID={userData?._id}
             postCreatorId={el?.userID}
