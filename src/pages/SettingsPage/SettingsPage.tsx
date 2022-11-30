@@ -10,6 +10,8 @@ import { LoadingButton, PassVisibilityBtn } from '../../components';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as Yup from 'yup';
 import { ImageIcon } from '../../icons';
+import { CropEasy } from '../../components';
+// import { Crop } from '@mui/icons-material';
 
 import { useAuth } from '../../context';
 import { api, apiRoutes } from '../../api';
@@ -28,6 +30,9 @@ export const SettingsPage = SettingsLayoutRoute(() => {
   const { userData, isLoading, updateAccountInfo } = useAuth();
 
   const [isPassVisible, setIsPassVisible] = useState(false);
+  const [cropedFile, setFile] = useState<File | null>(null);
+  const [photoURL, setPhotoURL] = useState<string>();
+  const [openCrop, setOpenCrop] = useState(false);
 
   const togglePasswordVisibility = useCallback(() => setIsPassVisible((prev) => !prev), []);
 
@@ -58,10 +63,14 @@ export const SettingsPage = SettingsLayoutRoute(() => {
     [],
   );
 
+  // useEffect(() => {
+  //   console.log(file, photoURL);
+  // }, [photoURL, file]);
   const handleSubmit = async (values: UpdateUserInterface) => {
-    if (values.file) {
+    // console.log(file);
+    if (cropedFile) {
       const formData = new FormData();
-      formData.append('file', values?.file);
+      formData.append('file', cropedFile);
       formData.append('upload_preset', 'zt2xg5aq');
       const uploadImg = await fetch('https://api.cloudinary.com/v1_1/dp0ftqcbc/image/upload', {
         method: 'POST',
@@ -71,7 +80,6 @@ export const SettingsPage = SettingsLayoutRoute(() => {
       values.avatarPublicId = uploadImg.public_id;
       values.oldAvatar = userData?.avatarPublicId;
     }
-
     if (!values.password?.length) {
       delete values.password;
       delete values.updatedAt;
@@ -168,6 +176,9 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                         onChange={(event: React.ChangeEvent) => {
                           const target = event.target as HTMLInputElement;
                           const files = target.files;
+                          files && setFile(files[0]);
+                          files && setPhotoURL(URL.createObjectURL(files[0]));
+                          setOpenCrop(true);
                           files && setFieldValue('file', files[0]);
                         }}
                       />
@@ -242,6 +253,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
           )}
         </Formik>
       </div>
+      {openCrop && <CropEasy {...{ photoURL, setOpenCrop, setPhotoURL, setFile }} />}
     </div>
   );
 });
