@@ -1,12 +1,10 @@
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { Route } from 'react-router-hoc';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import Context from '../../context/Context';
 import { api, apiRoutes } from '../../api';
-import clsx from 'clsx';
 
 import styles from './Activity.module.scss';
 
@@ -18,18 +16,22 @@ const ActivityLayoutRoute = Route(
   ({ id }) => `/activity/${id}`,
 );
 
+interface AnalyticsInterface {
+  data: { _id: number; count: number }[];
+}
+
 export const ActivityLayout = ActivityLayoutRoute(
   ({
     match: {
       params: { id },
     },
   }) => {
-    const { currentTheme } = useContext(Context);
+    const getStatisticQuery = async () =>
+      api.get<AnalyticsInterface>(`${apiRoutes.activity}/${id}`).then((res) => res.data);
 
-    const getStatisticQuery = () => api.get(`${apiRoutes.activity}/${id}`).then((res) => res.data);
-    const { data, isFetching, isLoading } = useQuery('statisticQuery', () => getStatisticQuery());
+    const { data, isFetching, isLoading } = useQuery<AnalyticsInterface>('statisticQuery', getStatisticQuery);
 
-    const filteredStats = useMemo(() => (data ? data : []), [data]);
+    const filteredStatus = useMemo(() => data?.data ?? [], [data]);
 
     const CustomTooltip = ({
       active,
@@ -48,6 +50,7 @@ export const ActivityLayout = ActivityLayoutRoute(
           return <p>Січень</p>;
         } else if (label == 2) {
           return <p>Лютий</p>;
+          // eslint-disable-next-line
         } else if (label == 2) {
           return <p>Лютий</p>;
         } else if (label == 3) {
@@ -78,13 +81,7 @@ export const ActivityLayout = ActivityLayoutRoute(
         return (
           <div className={styles.customTooltip}>
             <CunstomDiv label={label} />
-            <p
-              className={clsx(
-                currentTheme == '1' && styles.tooltipTextDarkTheme,
-                currentTheme == '2' && styles.tooltipTextClassicTheme,
-                currentTheme == '3' && styles.tooltipTextClassicTheme,
-              )}
-            >{`${name ? name : `avarage`}: ${payload[0].value}`}</p>
+            <p className={styles.tooltip}>{`${name ? name : `avarage`}: ${payload[0].value}`}</p>
           </div>
         );
       }
@@ -97,20 +94,12 @@ export const ActivityLayout = ActivityLayoutRoute(
     return (
       <>
         <div className={styles.wrapper}>
-          <h2
-            className={clsx(
-              currentTheme == '1' && styles.tooltipTextDarkTheme,
-              currentTheme == '2' && styles.tooltipTextClassicTheme,
-              currentTheme == '3' && styles.tooltipTextLightTheme,
-            )}
-          >
-            Статистика постів за місяць
-          </h2>
+          <h2 className={styles.tooltip}>Статистика постів за місяць</h2>
           <ResponsiveContainer width="100%" height={400}>
             <BarChart
               width={500}
               height={400}
-              data={filteredStats?.data}
+              data={filteredStatus}
               margin={{
                 top: 5,
                 right: 30,

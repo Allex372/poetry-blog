@@ -12,7 +12,7 @@ export interface PixelCropInterface {
   width: number;
   height: number;
 }
-
+// eslint-disable-next-line
 export const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }: any) => {
   //   const { setAlert, setLoading } = useAuth();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -28,6 +28,7 @@ export const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }: any) =
     // setLoading(true);
     try {
       if (croppedAreaPixels) {
+        // eslint-disable-next-line
         const { file, url }: any = await getCroppedImg(photoURL, croppedAreaPixels, rotation);
         setPhotoURL(url);
         setFile(file);
@@ -41,6 +42,7 @@ export const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }: any) =
       //     timeout: 5000,
       //     location: 'modal',
       //   });
+      // eslint-disable-next-line
       console.log(error);
     }
 

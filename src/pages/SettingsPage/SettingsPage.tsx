@@ -18,6 +18,7 @@ import { api, apiRoutes } from '../../api';
 import { UpdateUserInterface } from '../../types';
 
 import styles from './SettingsPage.module.scss';
+import axios from 'axios';
 
 const SettingsLayoutRoute = Route(
   {
@@ -72,10 +73,13 @@ export const SettingsPage = SettingsLayoutRoute(() => {
       const formData = new FormData();
       formData.append('file', cropedFile);
       formData.append('upload_preset', 'zt2xg5aq');
-      const uploadImg = await fetch('https://api.cloudinary.com/v1_1/dp0ftqcbc/image/upload', {
-        method: 'POST',
-        body: formData,
-      }).then((req) => req.json());
+      const uploadImg = await axios
+        .request({
+          method: 'POST',
+          data: formData,
+          url: 'https://api.cloudinary.com/v1_1/dp0ftqcbc/image/upload',
+        })
+        .then((res) => res.data());
       values.avatar = uploadImg.url;
       values.avatarPublicId = uploadImg.public_id;
       values.oldAvatar = userData?.avatarPublicId;
@@ -200,7 +204,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                       InputProps={{
                         endAdornment: (
                           <Tooltip
-                            aria-label={'Show password'}
+                            aria-label="Show password"
                             title={isPassVisible ? 'Hide password' : 'Show password'}
                             placement="right"
                           >
@@ -226,7 +230,7 @@ export const SettingsPage = SettingsLayoutRoute(() => {
                       InputProps={{
                         endAdornment: (
                           <Tooltip
-                            aria-label={'Show password'}
+                            aria-label="Show password"
                             title={isPassVisible ? 'Hide password' : 'Show password'}
                             placement="right"
                           >
