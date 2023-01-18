@@ -34,8 +34,7 @@ html[theme_Id='1'] {
   --post-text-color: white;
   --bucket-icon-color: hsla(360, 100%, 100%, 1);
   --smile-icon-color: hsla(360, 100%, 100%, 1);
-  --tooltip-bgcolor:   color: #77c9e6;
-;
+  --tooltip-bgcolor: #77c9e6;
 }
 
 html[theme_Id='2'] {

@@ -10,7 +10,7 @@ import { useAuth } from '../../context';
 import { RefetchContext } from '../../context/Refetch';
 import { api, apiRoutes } from '../../api';
 import { PostInterface } from '../../types';
-import { useTheme } from '../../hooks/useTheme';
+import { useTheme } from '../../context';
 
 import styles from './PostsLayout.module.scss';
 

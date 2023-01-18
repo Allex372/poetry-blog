@@ -21,7 +21,7 @@ type PostCardProps = {
   src: string;
   title?: string;
   text: string;
-  theme: number | undefined | null | string;
+  theme: string;
   style?: boolean;
   userName?: string;
   onDelete?: (postID: string) => void;
@@ -195,6 +195,7 @@ export const PostCard: FC<PostCardProps> = memo(
                       name="comment"
                       label="Коментувати"
                       type="text"
+                      // className={styles.inputText}
                       InputProps={{ disableUnderline: true }}
                     />
                   </div>

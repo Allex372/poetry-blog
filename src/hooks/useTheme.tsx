@@ -1,9 +1,11 @@
 import { useLayoutEffect, useState } from 'react';
-export const useTheme = () => {
-  const [theme, setTheme] = useState<string | null>();
+import { ThemesEnums } from '../enums';
+
+export const useTheme = (): [ThemesEnums, (arg: ThemesEnums) => void] => {
+  const [theme, setTheme] = useState<ThemesEnums>(ThemesEnums.ClassicTheme);
 
   useLayoutEffect(() => {
-    theme && document.documentElement.setAttribute('theme_Id', theme);
+    document.documentElement.setAttribute('theme_Id', theme);
   }, [theme]);
-  return { theme, setTheme };
+  return [theme, setTheme];
 };

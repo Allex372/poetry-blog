@@ -11,7 +11,7 @@ import { RefetchContext } from '../../context/Refetch';
 import { useAuth } from '../../context';
 import { PostInterface, User } from '../../types';
 import { api, apiRoutes } from '../../api';
-import { useTheme } from '../../hooks';
+import { useTheme } from '../../context';
 
 import styles from './ClientAccount.module.scss';
 

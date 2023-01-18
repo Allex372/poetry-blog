@@ -20,19 +20,21 @@ import { localStorageManager } from '../../services';
 import { CustomDialog } from '../Dialog';
 import { CreatePostForm } from '../CreatePostForm';
 import { useAuth } from '../../context';
-import { useTheme } from '../../hooks/useTheme';
+// import { useTheme } from '../../hooks/useTheme';
+import { ThemesEnums } from '../../enums';
+import { useTheme } from '../../context';
 
 import styles from './Header.module.scss';
 import axios from 'axios';
 
 const Themes = [
-  { id: 1, name: 'Темна' },
-  { id: 2, name: 'Світла' },
-  { id: 3, name: 'Оригінальна' },
+  { id: ThemesEnums.DarkTheme, name: 'Темна' },
+  { id: ThemesEnums.LightTheme, name: 'Світла' },
+  { id: ThemesEnums.ClassicTheme, name: 'Оригінальна' },
 ];
 
 interface ThemeInterface {
-  id: number;
+  id: ThemesEnums;
   name: string;
 }
 
@@ -62,19 +64,28 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
     setOpenSideBar(false);
   });
 
+  useEffect(() => {
+    // const localStorageTheme = localStorageManager.getItem('theme_Id');
+    // if (localStorageTheme === null) {
+    //   localStorageManager.setItem('theme_Id', ThemesEnums.ClassicTheme);
+    //   setTheme(ThemesEnums.ClassicTheme);
+    // } else {
+    //   setTheme(localStorageTheme as ThemesEnums);
+    // }
+    handleGetTheme();
+  }, []);
+
   const handleGetTheme = () => {
     const localStorageTheme = localStorageManager.getItem('theme_Id');
     if (!localStorageTheme) {
-      setTheme('3');
-      localStorageManager.setItem('theme_Id', 3);
-    } else {
-      setTheme(localStorageTheme);
+      setTheme(ThemesEnums.ClassicTheme);
+      localStorageManager.setItem('theme_Id', ThemesEnums.ClassicTheme);
     }
   };
 
   const handleSetTheme = ({ id }: ThemeInterface) => {
     localStorageManager.setItem('theme_Id', id);
-    setTheme(id.toString());
+    setTheme(id);
     changeTheme(id);
     handleGetTheme();
   };
@@ -135,14 +146,6 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
   };
 
   const handleCloseSelectedDialog = () => setOpenCreatePostDialog(false);
-
-  useEffect(() => {
-    if (theme == null && localStorageManager.getItem('theme_Id') == null) {
-      localStorageManager.setItem('theme_Id', 3);
-      setTheme('3');
-    }
-    handleGetTheme();
-  }, []);
 
   return (
     <>
