@@ -84,7 +84,7 @@ export const RegistrationForm: FC<RegistrationProps> = (props) => {
                   InputProps={{
                     endAdornment: (
                       <Tooltip
-                        aria-label={'Show password'}
+                        aria-label="Show password"
                         title={isPassVisible ? 'Hide password' : 'Show password'}
                         placement="right"
                       >

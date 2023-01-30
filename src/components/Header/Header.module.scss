@@ -7,19 +7,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: var(--mainWrapper-bgcolor);
 }
 
-.wrapperClassicTheme {
-  background-color: rgba(0, 25, 53);
-}
+// .wrapperClassicTheme {
+//   background-color: rgba(0, 25, 53);
+// }
 
-.wrapperLightTheme {
-  background-color: rgb(247, 247, 247);
-}
+// .wrapperLightTheme {
+//   background-color: rgb(247, 247, 247);
+// }
 
-.wrapperDarkTheme {
-  background-color: rgb(0, 0, 0);
-}
+// .wrapperDarkTheme {
+//   background-color: rgb(0, 0, 0);
+// }
 
 .raibowText {
   margin: 0 auto;
@@ -52,25 +53,23 @@
   width: 24px;
   height: 24px;
   cursor: pointer;
-}
-
-.menuIconLightTheme {
+  // color: var(--menu-icon-color);
   path {
-    stroke: black;
+    stroke: var(--menu-icon-color);
   }
 }
 
-.menuIconDarkTheme {
-  path {
-    stroke: #77c9e6;
-  }
-}
+// .menuIconDarkTheme {
+//   path {
+//     stroke: #77c9e6;
+//   }
+// }
 
-.menuIconClassicTheme {
-  path {
-    stroke: white;
-  }
-}
+// .menuIconClassicTheme {
+//   path {
+//     stroke: white;
+//   }
+// }
 
 .menuIcon:first-child {
   padding-left: 16px;
@@ -89,48 +88,54 @@
   width: 24px;
   height: 24px;
   cursor: pointer;
-}
-
-.sideBarIconClassicTheme {
+  color: var(--sideBar-icon-color);
   path {
-    stroke: white;
+    stroke: var(--sideBar-icon-color);
   }
 }
 
-.sideBarIconLightTheme {
-  path {
-    stroke: black;
-  }
-}
+// .sideBarIconClassicTheme {
+//   path {
+//     stroke: white;
+//   }
+// }
 
-.sideBarIconDarkTheme {
-  path {
-    stroke: #77c9e6;
-  }
-}
+// .sideBarIconLightTheme {
+//   path {
+//     stroke: black;
+//   }
+// }
+
+// .sideBarIconDarkTheme {
+//   path {
+//     stroke: #77c9e6;
+//   }
+// }
 
 .sideBarActiveIconClassicTheme {
   path {
-    stroke: white;
-    fill: white;
+    stroke: var(--sideBarActiveIconColor);
+    fill: var(--sideBarActiveIconColor);
   }
+  // color: var(--sideBarActiveIconColor);
 }
 
-.sideBarActiveIconLightTheme {
-  path {
-    stroke: black;
-    fill: black;
-  }
-}
+// .sideBarActiveIconLightTheme {
+//   path {
+//     stroke: black;
+//     fill: black;
+//   }
+// }
 
-.sideBarActiveIconDarkTheme {
-  path {
-    stroke: #77c9e6;
-    fill: #77c9e6;
-  }
-}
+// .sideBarActiveIconDarkTheme {
+//   path {
+//     stroke: #77c9e6;
+//     fill: #77c9e6;
+//   }
+// }
 
 .sideBarWrapperOpen {
+  background-color: var(--sideBarWrapper-bgcolor);
   bottom: 0;
   display: flex;
   flex-direction: column;
@@ -146,17 +151,17 @@
   width: 100%;
 }
 
-.sideBarWrapperOpenClassicTheme {
-  background-color: rgb(0, 25, 53);
-}
+// .sideBarWrapperOpenClassicTheme {
+//   background-color: rgb(0, 25, 53);
+// }
 
-.sideBarWrapperOpenLightTheme {
-  background-color: rgb(247, 247, 247);
-}
+// .sideBarWrapperOpenLightTheme {
+//   background-color: rgb(247, 247, 247);
+// }
 
-.sideBarWrapperOpenDarkTheme {
-  background-color: rgb(0, 0, 0);
-}
+// .sideBarWrapperOpenDarkTheme {
+//   background-color: rgb(0, 0, 0);
+// }
 
 .iconWrapper {
   display: flex;
@@ -169,19 +174,20 @@
   font-weight: 600;
   margin-left: 16px;
   cursor: pointer;
+  color: var(--sidebarText-color);
 }
 
-.sidebarTextClassicTheme {
-  color: white;
-}
+// .sidebarTextClassicTheme {
+//   color: white;
+// }
 
-.sidebarTextLightTheme {
-  color: black;
-}
+// .sidebarTextLightTheme {
+//   color: black;
+// }
 
-.sidebarTextDarkTheme {
-  color: #77c9e6;
-}
+// .sidebarTextDarkTheme {
+//   color: #77c9e6;
+// }
 
 .sidebarText:hover {
   animation: colorRotate 6s linear 0s infinite;
@@ -202,19 +208,20 @@
   margin-left: 32px;
   font-size: 16px;
   font-weight: 600;
+  color: var(--themes-colors-example);
 }
 
-.themesClassicTheme {
-  color: black;
-}
+// .themesClassicTheme {
+//   color: black;
+// }
 
-.themesLightTheme {
-  color: white;
-}
+// .themesLightTheme {
+//   color: white;
+// }
 
-.themesDarkTheme {
-  color: #77c9e6;
-}
+// .themesDarkTheme {
+//   color: #77c9e6;
+// }
 
 .themeItem {
   display: flex;
@@ -230,21 +237,26 @@
   width: 16px;
   height: 16px;
   margin-left: 4px;
-}
-
-.themeIconDarkTheme {
+  // color: var(--theme-icon-color);
   path {
-    stroke: #77c9e6;
-    fill: #77c9e6;
+    stroke: var(--theme-icon-color);
+    fill: var(--theme-icon-color);
   }
 }
 
-.themeIconClassicTheme {
-  path {
-    stroke: white;
-    fill: white;
-  }
-}
+// .themeIconDarkTheme {
+//   path {
+//     stroke: #77c9e6;
+//     fill: #77c9e6;
+//   }
+// }
+
+// .themeIconClassicTheme {
+//   path {
+//     stroke: white;
+//     fill: white;
+//   }
+// }
 
 .buttonWrapper {
   width: 100%;

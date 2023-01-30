@@ -1,21 +1,71 @@
-*{
+* {
   margin: 0;
   padding: 0;
 }
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+/* App theme styles */
+
+html[theme_Id='1'] {
+  --baseLayoutWrapper-bgcolor: rgba(0, 0, 0, 0.85);
+  --mainWrapper-bgcolor: rgb(0, 0, 0);
+  --card-wrapper-bgcolor: #0c0c0c;
+  --menu-icon-color: hsla(196, 69%, 68%, 1);
+  --sideBar-icon-color: hsla(196, 69%, 68%, 1);
+  --sideBarActiveIconColor: hsla(196, 69%, 68%, 1);
+  --sideBarWrapper-bgcolor: rgb(0, 0, 0);
+  --sidebarText-color: #77c9e6;
+  --themes-colors-example: #77c9e6;
+  --theme-icon-color: hsla(196, 69%, 68%, 1);
+  --post-text-color: white;
+  --bucket-icon-color: hsla(360, 100%, 100%, 1);
+  --smile-icon-color: hsla(360, 100%, 100%, 1);
+  --tooltip-bgcolor: #77c9e6;
+}
+
+html[theme_Id='2'] {
+  --baseLayoutWrapper-bgcolor: rgb(247, 247, 247);
+  --mainWrapper-bgcolor: rgb(247, 247, 247);
+  --menu-icon-color: hsla(0, 0%, 0%, 1);
+  --sideBar-icon-color: hsla(0, 0%, 0%, 1);
+  --card-wrapper-bgcolor: #e9e9e9;
+  --card-title-color: white;
+  --sideBarActiveIconColor: hsla(0, 0%, 0%, 1);
+  --sideBarWrapper-bgcolor: rgb(247, 247, 247);
+  --sidebarText-color: black;
+  --theme-icon-color: hsla(0, 0%, 0%, 1);
+  --themes-colors-example: black;
+  --bucket-icon-color: hsla(0, 0%, 0%, 1);
+  --smile-icon-color: hsla(0, 0%, 0%, 1);
+  --tooltip-bgcolor: white;
+}
+
+html[theme_Id='3'] {
+  --baseLayoutWrapper-bgcolor: rgba(0, 25, 53, 0.85);
+  --mainWrapper-bgcolor: rgba(0, 25, 53);
+  --menu-icon-color: hsla(360, 100%, 100%, 1);
+  --sideBar-icon-color: hsla(360, 100%, 100%, 1);
+  --card-wrapper-bgcolor: white;
+  --sideBarActiveIconColor: hsla(360, 100%, 100%, 1);
+  --sideBarWrapper-bgcolor: rgb(0, 25, 53);
+  --sidebarText-color: white;
+  --themes-colors-example: white;
+  --theme-icon-color: hsla(360, 100%, 100%, 1);
+  --bucket-icon-color: hsla(0, 0%, 0%, 1);
+  --smile-icon-color: hsla(0, 0%, 0%, 1);
+  --tooltip-bgcolor: black;
 }
