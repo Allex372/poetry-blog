@@ -1,4 +1,4 @@
-import React, { useEffect, useState, FC } from 'react';
+import React, { useState, FC } from 'react';
 import Button from '@material-ui/core/Button';
 import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -16,11 +16,9 @@ import {
 } from '../../icons';
 import { SidebarNavItem } from './SidebarItems';
 import { links } from '../../App';
-import { localStorageManager } from '../../services';
 import { CustomDialog } from '../Dialog';
 import { CreatePostForm } from '../CreatePostForm';
 import { useAuth } from '../../context';
-// import { useTheme } from '../../hooks/useTheme';
 import { ThemesEnums } from '../../enums';
 import { useTheme } from '../../context';
 
@@ -50,10 +48,10 @@ enum RolesEnum {
 
 const btnStyle = { backgroundColor: '#00b8ff', color: 'white', fontWeight: 'bold' };
 
-export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) => {
+export const Header: FC<HeaderInterface> = ({ handleNeedRefetch }) => {
   const history = useHistory();
   const { userData, logout } = useAuth();
-  const { theme, setTheme } = useTheme();
+  const { theme, setClassic, setDark, setLight } = useTheme();
 
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
   const [isThemeOpen, setIsThemeOpen] = useState<boolean>(false);
@@ -63,32 +61,6 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
   history.listen(() => {
     setOpenSideBar(false);
   });
-
-  useEffect(() => {
-    // const localStorageTheme = localStorageManager.getItem('theme_Id');
-    // if (localStorageTheme === null) {
-    //   localStorageManager.setItem('theme_Id', ThemesEnums.ClassicTheme);
-    //   setTheme(ThemesEnums.ClassicTheme);
-    // } else {
-    //   setTheme(localStorageTheme as ThemesEnums);
-    // }
-    handleGetTheme();
-  }, []);
-
-  const handleGetTheme = () => {
-    const localStorageTheme = localStorageManager.getItem('theme_Id');
-    if (!localStorageTheme) {
-      setTheme(ThemesEnums.ClassicTheme);
-      localStorageManager.setItem('theme_Id', ThemesEnums.ClassicTheme);
-    }
-  };
-
-  const handleSetTheme = ({ id }: ThemeInterface) => {
-    localStorageManager.setItem('theme_Id', id);
-    setTheme(id);
-    changeTheme(id);
-    handleGetTheme();
-  };
 
   const handleSideBarClick = () => {
     setOpenSideBar(!openSideBar);
@@ -230,8 +202,16 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
                 </p>
                 {isThemeOpen && (
                   <div className={styles.themes}>
-                    {Themes.map((themeEnum) => (
-                      <div key={themeEnum.id} onClick={() => handleSetTheme(themeEnum)} className={styles.themeItem}>
+                    {Themes.map((themeEnum: ThemeInterface) => (
+                      <div
+                        key={themeEnum.id}
+                        onClick={() => {
+                          themeEnum.id == '1' && setDark(themeEnum);
+                          themeEnum.id == '2' && setLight(themeEnum);
+                          themeEnum.id == '3' && setClassic(themeEnum);
+                        }}
+                        className={styles.themeItem}
+                      >
                         {themeEnum.name}
                         {theme == themeEnum?.id.toString() && <ChoosenIcon className={styles.themeIcon} />}
                       </div>
