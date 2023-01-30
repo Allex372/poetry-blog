@@ -14,17 +14,7 @@
   border: 2px solid gray;
 }
 
-.tooltipTextClassicTheme {
-  color: black;
-  padding: 24px 0;
-}
-
-.tooltipTextLightTheme {
-  color: white;
-  padding: 24px 0;
-}
-
-.tooltipTextDarkTheme {
-  color: #77c9e6;
+.tooltip {
+  color: var(--tooltip-bgcolor);
   padding: 24px 0;
 }

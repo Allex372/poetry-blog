@@ -1,10 +1,8 @@
-import React, { useEffect, useState, FC } from 'react';
+import React, { useState, FC } from 'react';
 import Button from '@material-ui/core/Button';
 import { NavLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
-// import { useMutation, useQuery } from 'react-query';
-import clsx from 'clsx';
 
 import {
   MenuIcon,
@@ -18,22 +16,23 @@ import {
 } from '../../icons';
 import { SidebarNavItem } from './SidebarItems';
 import { links } from '../../App';
-import { localStorageManager } from '../../services';
 import { CustomDialog } from '../Dialog';
 import { CreatePostForm } from '../CreatePostForm';
 import { useAuth } from '../../context';
+import { ThemesEnums } from '../../enums';
+import { useTheme } from '../../context';
 
 import styles from './Header.module.scss';
 import axios from 'axios';
 
 const Themes = [
-  { id: 1, name: 'Темна' },
-  { id: 2, name: 'Світла' },
-  { id: 3, name: 'Оригінальна' },
+  { id: ThemesEnums.DarkTheme, name: 'Темна' },
+  { id: ThemesEnums.LightTheme, name: 'Світла' },
+  { id: ThemesEnums.ClassicTheme, name: 'Оригінальна' },
 ];
 
 interface ThemeInterface {
-  id: number;
+  id: ThemesEnums;
   name: string;
 }
 
@@ -49,28 +48,19 @@ enum RolesEnum {
 
 const btnStyle = { backgroundColor: '#00b8ff', color: 'white', fontWeight: 'bold' };
 
-export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) => {
+export const Header: FC<HeaderInterface> = ({ handleNeedRefetch }) => {
   const history = useHistory();
   const { userData, logout } = useAuth();
+  const { theme, setClassic, setDark, setLight } = useTheme();
 
   const [openSideBar, setOpenSideBar] = useState<boolean>(false);
   const [isThemeOpen, setIsThemeOpen] = useState<boolean>(false);
-  const [currentTheme, setCurrentTheme] = useState<number | null | string>();
+
   const [openCreatePostDialog, setOpenCreatePostDialog] = useState(false);
 
   history.listen(() => {
     setOpenSideBar(false);
   });
-
-  const handleGetTheme = () => {
-    setCurrentTheme(localStorageManager.getItem('theme_Id'));
-  };
-
-  const handleSetTheme = ({ id }: ThemeInterface) => {
-    localStorageManager.setItem('theme_Id', id);
-    changeTheme(id);
-    handleGetTheme();
-  };
 
   const handleSideBarClick = () => {
     setOpenSideBar(!openSideBar);
@@ -83,10 +73,17 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
     formData.append('upload_preset', 'vm30xf2h');
 
     if (value.title && value.text) {
-      const uploadImg = await fetch('https://api.cloudinary.com/v1_1/dp0ftqcbc/image/upload', {
-        method: 'POST',
-        body: formData,
-      }).then((req) => req.json());
+      // const uploadImg = await fetch('https://api.cloudinary.com/v1_1/dp0ftqcbc/image/upload', {
+      //   method: 'POST',
+      //   body: formData,
+      // }).then((req) => req.json());
+      const uploadImg = await axios
+        .request({
+          url: 'https://api.cloudinary.com/v1_1/dp0ftqcbc/image/upload',
+          method: 'POST',
+          data: formData,
+        })
+        .then((res) => res.data);
 
       if (uploadImg.secure_url) {
         const newPost = {
@@ -97,7 +94,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
           userName: userData?.name,
           photoPublicId: uploadImg?.public_id,
         };
-        await axios
+        axios
           .request({
             method: 'post',
             url: 'https://poetry-blog-nodejs.herokuapp.com/posts',
@@ -122,42 +119,14 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
 
   const handleCloseSelectedDialog = () => setOpenCreatePostDialog(false);
 
-  useEffect(() => {
-    if (currentTheme == null && localStorageManager.getItem('theme_Id') == null) {
-      localStorageManager.setItem('theme_Id', 3);
-      setCurrentTheme(3);
-    }
-    handleGetTheme();
-  }, []);
-
   return (
     <>
-      <div
-        className={clsx(
-          currentTheme == '1' && [styles.wrapper, styles.wrapperDarkTheme],
-          currentTheme == '2' && [styles.wrapper, styles.wrapperLightTheme],
-          currentTheme == '3' && [styles.wrapper, styles.wrapperClassicTheme],
-        )}
-      >
+      <div className={styles.wrapper}>
         <div style={{ width: '75px' }}>
           {openSideBar ? (
-            <CloseIcon
-              className={clsx(
-                currentTheme == '1' && [styles.menuIcon, styles.menuIconDarkTheme],
-                currentTheme == '2' && [styles.menuIcon, styles.menuIconLightTheme],
-                currentTheme == '3' && [styles.menuIcon, styles.menuIconClassicTheme],
-              )}
-              onClick={handleSideBarClick}
-            />
+            <CloseIcon className={styles.menuIcon} onClick={handleSideBarClick} />
           ) : (
-            <MenuIcon
-              className={clsx(
-                currentTheme == '1' && [styles.menuIcon, styles.themeIconDarkTheme],
-                currentTheme == '2' && [styles.menuIcon, styles.menuIconLightTheme],
-                currentTheme == '3' && [styles.menuIcon, styles.themeIconClassicTheme],
-              )}
-              onClick={handleSideBarClick}
-            />
+            <MenuIcon className={styles.menuIcon} onClick={handleSideBarClick} />
           )}
         </div>
 
@@ -177,13 +146,7 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
       </div>
       {openSideBar && (
         <>
-          <div
-            className={clsx(
-              currentTheme == '1' && [styles.sideBarWrapperOpen, styles.sideBarWrapperOpenDarkTheme],
-              currentTheme == '2' && [styles.sideBarWrapperOpen, styles.sideBarWrapperOpenLightTheme],
-              currentTheme == '3' && [styles.sideBarWrapperOpen, styles.sideBarWrapperOpenClassicTheme],
-            )}
-          >
+          <div className={styles.sideBarWrapperOpen}>
             {userData && userData?.role === RolesEnum.Admin && (
               <div className={styles.buttonWrapper}>
                 <div className={styles.createBtn}>
@@ -200,65 +163,23 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
             )}
             <SidebarNavItem className={styles.linkStyle} route={links.PostsLayout()}>
               <div className={styles.iconWrapper}>
-                <HomeIcon
-                  className={clsx(
-                    currentTheme == '1' && [styles.sideBarIcon, styles.sideBarIconDarkTheme],
-                    currentTheme == '2' && [styles.sideBarIcon, styles.sideBarIconLightTheme],
-                    currentTheme == '3' && [styles.sideBarIcon, styles.sideBarIconClassicTheme],
-                  )}
-                />
-                <p
-                  className={clsx(
-                    currentTheme == '1' && [styles.sidebarText, styles.sidebarTextDarkTheme],
-                    currentTheme == '2' && [styles.sidebarText, styles.sidebarTextLightTheme],
-                    currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
-                  )}
-                >
-                  Стрічка
-                </p>
+                <HomeIcon className={styles.sideBarIcon} />
+                <p className={styles.sidebarText}>Стрічка</p>
               </div>
             </SidebarNavItem>
 
             <SidebarNavItem className={styles.linkStyle} route={links.SettingsPage()}>
               <div className={styles.iconWrapper}>
-                <SettingsIcon
-                  className={clsx(
-                    currentTheme == '1' && [styles.sideBarIcon, styles.sideBarIconDarkTheme],
-                    currentTheme == '2' && [styles.sideBarIcon, styles.sideBarIconLightTheme],
-                    currentTheme == '3' && [styles.sideBarIcon, styles.sideBarIconClassicTheme],
-                  )}
-                />
-                <p
-                  className={clsx(
-                    currentTheme == '1' && [styles.sidebarText, styles.sidebarTextDarkTheme],
-                    currentTheme == '2' && [styles.sidebarText, styles.sidebarTextLightTheme],
-                    currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
-                  )}
-                >
-                  Налаштування
-                </p>
+                <SettingsIcon className={styles.sideBarIcon} />
+                <p className={styles.sidebarText}>Налаштування</p>
               </div>
             </SidebarNavItem>
 
             {userData && userData?.role === RolesEnum.Admin && (
               <SidebarNavItem className={styles.linkStyle} route={links.ActivityLayout({ id: userData?._id })}>
                 <div className={styles.iconWrapper}>
-                  <ActivityIcon
-                    className={clsx(
-                      currentTheme == '1' && [styles.sideBarIcon, styles.sideBarActiveIconDarkTheme],
-                      currentTheme == '2' && [styles.sideBarIcon, styles.sideBarActiveIconLightTheme],
-                      currentTheme == '3' && [styles.sideBarIcon, styles.sideBarActiveIconClassicTheme],
-                    )}
-                  />
-                  <p
-                    className={clsx(
-                      currentTheme == '1' && [styles.sidebarText, styles.sidebarTextDarkTheme],
-                      currentTheme == '2' && [styles.sidebarText, styles.sidebarTextLightTheme],
-                      currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
-                    )}
-                  >
-                    Активність
-                  </p>
+                  <ActivityIcon className={styles.sideBarIcon} />
+                  <p className={styles.sidebarText}>Активність</p>
                 </div>
               </SidebarNavItem>
             )}
@@ -266,66 +187,33 @@ export const Header: FC<HeaderInterface> = ({ changeTheme, handleNeedRefetch }) 
             {userData && (
               <SidebarNavItem className={styles.linkStyle} route={links.ClientAccount({ id: userData._id })}>
                 <div className={styles.iconWrapper}>
-                  <UserIcon
-                    className={clsx(
-                      currentTheme == '1' && [styles.sideBarIcon, styles.sideBarActiveIconDarkTheme],
-                      currentTheme == '2' && [styles.sideBarIcon, styles.sideBarActiveIconLightTheme],
-                      currentTheme == '3' && [styles.sideBarIcon, styles.sideBarActiveIconClassicTheme],
-                    )}
-                  />
-                  <p
-                    className={clsx(
-                      currentTheme == '1' && [styles.sidebarText, styles.sidebarTextDarkTheme],
-                      currentTheme == '2' && [styles.sidebarText, styles.sidebarTextLightTheme],
-                      currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
-                    )}
-                  >
-                    Мої пости
-                  </p>
+                  <UserIcon className={styles.sideBarIcon} />
+                  <p className={styles.sidebarText}>Мої пости</p>
                 </div>
               </SidebarNavItem>
             )}
 
             <div className={styles.iconWrapper}>
-              <CustomizingIcon
-                className={clsx(
-                  currentTheme == '1' && [styles.sideBarIcon, styles.sideBarIconDarkTheme],
-                  currentTheme == '2' && [styles.sideBarIcon, styles.sideBarIconLightTheme],
-                  currentTheme == '3' && [styles.sideBarIcon, styles.sideBarIconClassicTheme],
-                )}
-              />
+              <CustomizingIcon className={styles.sideBarIcon} />
 
               <div className={styles.themeBlock}>
-                <p
-                  className={clsx(
-                    currentTheme == '1' && [styles.sidebarText, styles.sidebarTextDarkTheme],
-                    currentTheme == '2' && [styles.sidebarText, styles.sidebarTextLightTheme],
-                    currentTheme == '3' && [styles.sidebarText, styles.sidebarTextClassicTheme],
-                  )}
-                  onClick={() => setIsThemeOpen(!isThemeOpen)}
-                >
+                <p className={styles.sidebarText} onClick={() => setIsThemeOpen(!isThemeOpen)}>
                   Тема
                 </p>
                 {isThemeOpen && (
-                  <div
-                    className={clsx(
-                      currentTheme == '1' && [styles.themes, styles.themesDarkTheme],
-                      currentTheme == '2' && [styles.themes, styles.themesClassicTheme],
-                      currentTheme == '3' && [styles.themes, styles.themesLightTheme],
-                    )}
-                  >
-                    {Themes.map((theme) => (
-                      <div key={theme.id} onClick={() => handleSetTheme(theme)} className={styles.themeItem}>
-                        {theme.name}
-                        {currentTheme == theme?.id && (
-                          <ChoosenIcon
-                            className={clsx(
-                              currentTheme == '1' && [styles.themeIcon, styles.themeIconDarkTheme],
-                              currentTheme == '2' && [styles.themeIcon, styles.sideBarIconLightTheme],
-                              currentTheme == '3' && [styles.themeIcon, styles.themeIconClassicTheme],
-                            )}
-                          />
-                        )}
+                  <div className={styles.themes}>
+                    {Themes.map((themeEnum: ThemeInterface) => (
+                      <div
+                        key={themeEnum.id}
+                        onClick={() => {
+                          themeEnum.id == '1' && setDark(themeEnum);
+                          themeEnum.id == '2' && setLight(themeEnum);
+                          themeEnum.id == '3' && setClassic(themeEnum);
+                        }}
+                        className={styles.themeItem}
+                      >
+                        {themeEnum.name}
+                        {theme == themeEnum?.id.toString() && <ChoosenIcon className={styles.themeIcon} />}
                       </div>
                     ))}
                   </div>

@@ -37,6 +37,7 @@ export interface User {
   __v: number;
   _id: string;
   avatar?: string;
+  avatarPublicId?: string | number;
 }
 
 export interface UpdateUserInterface {

@@ -9,6 +9,7 @@ import { QueryClientProvider } from 'react-query';
 import { queryClient } from './api';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ThemeProvider from './context/Theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -16,7 +17,9 @@ root.render(
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <App />
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
           <ToastContainer position="bottom-center" autoClose={5000} closeButton={false} />
         </AuthProvider>
       </QueryClientProvider>

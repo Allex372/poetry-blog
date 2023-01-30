@@ -10,3 +10,4 @@ export * from './PassVisibilityBtn';
 export * from './ConfirmationModal';
 export * from './RegistrationForm';
 export * from './PhotoPreviewModal';
+export * from './Crop';
